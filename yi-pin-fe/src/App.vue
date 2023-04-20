@@ -1,11 +1,12 @@
 <script setup>
-import Header from "@/components/header/Header.vue";
+import Main from '@/components/pages/main/Main.vue';
+
 </script>
 
 <template>
-  <Header />
+  <component :is='Main' />
 </template>
 
-<style scoped>
+<style scoped lang='scss'>
 
 </style>
