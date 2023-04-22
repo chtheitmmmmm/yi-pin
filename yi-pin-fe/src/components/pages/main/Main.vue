@@ -25,7 +25,9 @@ const areas = [shortIntro, news, blogs]
 
 <template>
   <Header :areas='areas'/>
-  <Body :areas='areas' />
+  <div class='container'>
+    <Body :areas='areas' />
+  </div>
 </template>
 
 <style scoped lang='scss'>
