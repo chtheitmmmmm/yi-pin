@@ -31,6 +31,7 @@ $font-name: "FZBeiWeiKaiShu-S19S";
     font-size: 1.7em;
     text-decoration: none;
     transition: 0.3s;
+    color: #0027c6;
     &:hover {
       color: rgba(0, 255, 255, 0.98);
     }

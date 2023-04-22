@@ -2,6 +2,7 @@
 import Logo from "./Logo.vue";
 import NavItem from './NavItem.vue';
 import type { NavItemArea } from '@/components/header/NavItem.vue';
+import SearchBar from '@/components/header/SearchBar.vue';
 
 defineProps<{
   areas: NavItemArea[]
@@ -16,7 +17,14 @@ defineProps<{
       <div class="nav-item">
         <Logo class='logo'/>
       </div>
-      <NavItem v-for='area of areas' :phrase='area.phrase' :link='area.link' />
+      <div class='navbar nav-item'>
+        <div v-for='area of areas' class='nav-item'>
+          <NavItem :phrase='area.phrase' :link='area.link'/>
+        </div>
+      </div>
+      <div class='nav-item'>
+        <SearchBar />
+      </div>
     </div>
     </div>
   </div>

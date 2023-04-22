@@ -9,10 +9,6 @@ defineProps<{
 
 <template>
   <div>
-    <Area v-for='area of areas' :a='area'></Area>
+    <Area v-for='area in areas' :a='area'></Area>
   </div>
 </template>
-
-<div>
-
-</div>
