@@ -5,4 +5,7 @@ export class AppService {
   getHelloWorld() {
     return "Hello world!"
   }
+  userRegister() {
+
+  }
 }
