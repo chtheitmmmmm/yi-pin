@@ -26,4 +26,12 @@ export class UserService {
   async register(user: User) {
     await this.db.userRegister(user)
   }
+
+  async login(account: string, password: string) {
+    return await this.db.userLogin(account, password)
+  }
+
+  async autoLogin(cookie: string) {
+    return await this.db.userAutoLogin(cookie)
+  }
 }

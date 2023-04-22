@@ -39,4 +39,38 @@ export class DbService {
     }
     await this.userRepository.save(user)
   }
+
+  /**
+   * # User
+   * ## R
+   * @param account
+   * @param password
+   */
+  async userLogin(account: string, password: string) {
+    const user = await this.userRepository.findOneBy({
+      account
+    })
+    if (user) {
+      if (user.password !== password) {
+        throw "密码错误"
+      }
+    } else {
+      throw "用户未注册"
+    }
+    return user
+  }
+
+  /**
+   * 客户端通过 cookie 获取用户账号信息
+   * @param uid
+   */
+  async userAutoLogin(uid: string) {
+    const user = await this.userRepository.findOneBy({
+      uid
+    })
+    if (!user) {
+      throw "无效的 cookie"
+    }
+    return user
+  }
 }
