@@ -1,12 +1,15 @@
 <script setup lang='ts'>
-import Main from '@/components/pages/main/Main.vue';
 
 </script>
 
 <template>
-  <component :is='Main' />
+  <div>
+    <router-view></router-view>
+  </div>
 </template>
 
-<style scoped lang='scss'>
+<style lang='scss'>
+
+
 
 </style>

@@ -3,9 +3,10 @@ import { User, UserRegisterInfo } from './user';
 import { UserService } from './user.service';
 import { Response } from 'express';
 import { userRegisterPipe } from './user.dto';
+import * as cookieParser from "cookie"
 
 
-@Controller('user')
+@Controller('api/user')
 export class UserController {
 
   constructor(private readonly service: UserService) {}
@@ -18,7 +19,8 @@ export class UserController {
   ) {
     const user = new User(userRegisterInfo)
     await this.service.register(user) // 注册用户
-    res.setHeader('Set-Cookie', `uuid=${user.uid}; HttpOnly`) // 发送 cookie
+    res.setHeader('Set-Cookie', `uid=${user.uid}; path=/`) // 发送凭证
+    res.send(user)
   }
 
   /**
@@ -35,14 +37,17 @@ export class UserController {
   @Get("login")
   async login(
     @Query("account") account,
-    @Query("password") password
+    @Query("password") password,
+    @Res() res: Response,
   ) {
-    return await this.service.login(account, password)
+    const user = await this.service.login(account, password)
+    res.setHeader('Set-Cookie', `uid=${user.uid}; path=/`)
+    res.send(user)
   }
 
   /**
    * 根据用户浏览器发送的 cookie 自动登录
-   * @param cookie {string} 发送的 cookie，也是用户的 uid
+   * @param cookieString {string} 可能包含用户的 UIDc的cookie
    * @return {User} 返回用户的数据
    * @throws {string}
    *
@@ -50,8 +55,17 @@ export class UserController {
    */
   @Get("autologin")
   async autoLogin(
-    @Headers("cookie") cookie: string,
+    @Headers("Cookie") cookieString: string,
   ) {
-    return await this.service.autoLogin(cookie)
+    const cookie = cookieParser.parse(cookieString) as { uid?: string }
+    if (cookie.uid) {
+      return await this.service.autoLogin(cookie.uid)
+    } else {
+      throw {
+        statusCode: 401,
+        message: "没有有效 cookie",
+        code: 1
+      }
+    }
   }
 }

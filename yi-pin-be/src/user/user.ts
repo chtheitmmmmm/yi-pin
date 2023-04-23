@@ -1,6 +1,7 @@
-import { Column, Entity, PrimaryColumn, Unique } from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
 import * as fs from 'fs';
-import uuid from 'uuid';
+import { v1, v4 } from 'uuid';
+import * as path from 'path';
 
 export interface UserRegisterInfo {
   account: User['account']
@@ -8,14 +9,12 @@ export interface UserRegisterInfo {
 }
 
 @Entity()
-export class User {
-  @PrimaryColumn("varchar", {
-    length: 36
-  })
-  uid: string = uuid.v4()
+export class User implements User {
+  @PrimaryGeneratedColumn("uuid")
+  uid: string = v4()
 
   @Column("tinytext")
-  nickname: string
+  nickname: string = 'yp-' + v1()
 
   @PrimaryColumn("varchar", {
     length: 255
@@ -26,16 +25,18 @@ export class User {
   password: string
 
   @Column("blob")
-  profile: Blob = new Blob([fs.readFileSync("assets/user-default-profile.png").buffer])
+  profile: Buffer = fs.readFileSync(path.resolve(__dirname, "../../assets/user-default-profile.png"))
 
   @Column("timestamp")
   registerTime: Date = new Date()
 
   @Column("tinyint")
-  type: number        // user type
+  type: number = 127        // user type
 
-  constructor({account, password}: UserRegisterInfo) {
-    this.account = account
-    this.password = password
+  constructor(userRegisterInfo?: UserRegisterInfo) {
+    if (userRegisterInfo !== undefined) {
+      this.account = userRegisterInfo.account
+      this.password = userRegisterInfo.password
+    }
   }
 }

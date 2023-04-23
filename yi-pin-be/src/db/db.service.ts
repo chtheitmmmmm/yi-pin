@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { User } from '../user/user';
 import { DataSource, Repository } from 'typeorm';
 
@@ -9,9 +9,11 @@ export class DbService {
     host: "localhost",
     port: 3306,
     username: "root",
-    password: "bi0edcbcgh",
+    password: "",
     database: "yp",
     entities: [User],
+    logging: true,
+    logger: "advanced-console",
     synchronize: true
   })
 
@@ -33,10 +35,14 @@ export class DbService {
    */
   async userRegister(user: User) {
     if (await this.userRepository.findOneBy({
-      uid: user.uid
+      account: user.account
     })) {
-      throw "用户已注册"
+      throw {
+        statusCode: 403,
+        message: "用户已注册"
+      }
     }
+    console.log(user)
     await this.userRepository.save(user)
   }
 
@@ -52,10 +58,16 @@ export class DbService {
     })
     if (user) {
       if (user.password !== password) {
-        throw "密码错误"
+        throw {
+          statusCode: 403,
+          message: "密码错误"
+        }
       }
     } else {
-      throw "用户未注册"
+      throw {
+        statusCode: 403,
+        message: "用户未注册"
+      }
     }
     return user
   }

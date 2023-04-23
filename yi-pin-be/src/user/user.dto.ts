@@ -1,4 +1,4 @@
-import Joi from 'joi';
+import Joi = require('joi');
 import { JoiValidationPipe } from '../app.controller';
 
 const joiExtend = Joi.extend({

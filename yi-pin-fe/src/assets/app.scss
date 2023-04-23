@@ -1,0 +1,8 @@
+$font-name: "FZBeiWeiKaiShu-S19S";
+@font-face {
+  font-family: $font-name;
+  src: local($font-name), url("@/assets/fonts/" + $font-name + ".ttf");
+}
+* {
+  font-family: $font-name;
+}
