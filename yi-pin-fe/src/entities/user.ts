@@ -5,7 +5,7 @@ export interface RawUser {
   password: string
   profile: {
     "type": "Buffer",
-    "data": Int8Array
+    "data": number[]
   }
   registerTime: Date 
   type: number 

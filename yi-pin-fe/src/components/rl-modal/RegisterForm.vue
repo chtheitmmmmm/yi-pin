@@ -24,7 +24,6 @@ const registerError = reactive({
 const registering = ref(false)
 
 function onRegister() {
-  console.log(registerInput)
   const result = registerInputValidator.validate(registerInput)
   // registering.value = true
   if (result.error) {

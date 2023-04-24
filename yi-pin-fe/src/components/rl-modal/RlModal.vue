@@ -22,7 +22,6 @@ const emits = defineEmits<{
 }>()
 
 onMounted(() => {
-  console.log(modal.value)
   theModal = new Modal(modal.value!)
 })
 
