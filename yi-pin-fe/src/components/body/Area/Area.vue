@@ -22,7 +22,6 @@ const clpLink = `clp-${props.a.link}`
         </button>
       </div>
     </div>
-
     <div class='container collapse show card bg-opacity-10 bg-secondary' :id='clpLink'>
       <div class='card-body'>
         <slot></slot>

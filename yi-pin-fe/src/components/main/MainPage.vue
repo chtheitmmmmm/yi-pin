@@ -12,7 +12,10 @@ import jsCookie from "js-cookie"
 import ShortIntroArea from '@/components/body/Area/ShortIntroArea.vue';
 import NewsArea from '@/components/body/Area/NewsArea.vue';
 import BlogArea from '@/components/body/Area/BlogArea.vue';
+<<<<<<< HEAD
 import BusArea from '@/components/body/Area/BusArea.vue';
+=======
+>>>>>>> origin/main
 
 const shortIntro: BodyArea = {  // 简介区域
   phrase: "简介",
