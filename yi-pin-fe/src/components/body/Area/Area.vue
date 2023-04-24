@@ -1,25 +1,36 @@
 <script setup lang='ts'>
-import type { NavItemArea } from '@/components/header/NavItem.vue';
+import type { BodyArea } from '@/components/body/Body.vue';
 
-export interface BodyArea extends NavItemArea {
-  tt: string
-}
-
-defineProps<{
+const props = defineProps<{
   a: BodyArea
 }>()
 
+const clpLink = `clp-${props.a.link}`
+
 </script>
 
-<template>
+<template>e
+<div class='container'>
   <div :id='a.link'>
-    <div class='h1' >
-      {{ a.tt }}
+    <div class='navbar'>
+      <div class='h1' >
+        {{ a.tt }}
+      </div>
+      <div>
+        <button class='btn btn-outline-primary' data-bs-toggle='collapse' :data-bs-target='`#${clpLink}`' type='button'>
+          收起
+        </button>
+      </div>
     </div>
-    <div class='container'>
-      <slot name='area-content'></slot>
+
+    <div class='container collapse show card' :id='clpLink'>
+      <div class='card-body'>
+        <slot></slot>
+      </div>
     </div>
+    <hr/>
   </div>
+</div>
 </template>
 
 <style scoped lang='scss'>

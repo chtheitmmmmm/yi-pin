@@ -20,7 +20,6 @@ const toast = ref<HTMLDivElement | null>(null)
 let theToast = reactive<Toast>({} as unknown as Toast)
 
 function show() {
-  console.log(theToast)
   theToast.show()
 }
 
@@ -38,7 +37,7 @@ onMounted(() => {
 <div class="toast-container position-fixed bottom-0 end-0 p-3 w-50">
   <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" ref='toast'>
     <div class="toast-header">
-      <img :src='userData.profile' class="rounded me-2" alt="...">
+      <img :src='userData.profile' class="rounded me-2" alt="用户头像">
       <strong class="me-auto">{{ userData.account }}</strong>
       <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
     </div>
@@ -48,5 +47,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang='scss'>
-
+img {
+  width: 2em;
+}
 </style>

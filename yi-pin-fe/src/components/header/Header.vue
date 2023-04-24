@@ -15,7 +15,11 @@ defineExpose({
   onLogined
 })
 
-const emit = defineEmits(['rl'])
+const emits = defineEmits<{
+  (e: "rl", ifRegister: boolean): void,
+  (e: "logout"): void
+}>()
+
 let user = reactive<{
   logined: boolean,
   data: User | null
@@ -25,13 +29,18 @@ let user = reactive<{
 })
 
 function onRl(ifRegister: boolean) {
-  console.log("on rl")
-  emit('rl', ifRegister)
+  emits('rl', ifRegister)
 }
 
 function onLogined(u: User) {
   user.data = u
   user.logined = true
+}
+
+function onLogout() {
+  emits("logout")
+  user.logined = false
+  user.data = null
 }
 
 </script>
@@ -50,7 +59,7 @@ function onLogined(u: User) {
     </div>
     <div class='nav-item'>
       <Login @rl='onRl' v-if='!user.logined'/>
-      <Profile v-else :user-data='user.data!'/>
+      <Profile v-else :user-data='user.data!' @logout='onLogout'/>
     </div>
   </div>
   </div>
@@ -60,6 +69,8 @@ function onLogined(u: User) {
 <style scoped lang='scss'>
 .ctn {
   background: #ff5757;
-
+  .container > .navbar {
+    justify-content: space-around;
+  }
 }
 </style>

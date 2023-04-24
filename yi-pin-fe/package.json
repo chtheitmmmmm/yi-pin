@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
+    "dep": "scp -r dist/* root@123.56.18.197:/www/server/nginx/html",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
     "build-only": "vite build",
@@ -15,10 +16,12 @@
     "axios": "^1.3.6",
     "bootstrap": "^5.2.3",
     "joi": "^17.9.1",
+    "js-cookie": "^3.0.4",
     "vue": "^3.2.47",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {
+    "@types/js-cookie": "^3.0.3",
     "@types/node": "^18.14.2",
     "@vitejs/plugin-vue": "^4.0.0",
     "@vue/tsconfig": "^0.1.3",

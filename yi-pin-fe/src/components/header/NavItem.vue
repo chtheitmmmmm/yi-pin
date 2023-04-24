@@ -1,10 +1,10 @@
 <script setup lang='ts'>
-import NavItem from '@/components/header/NavItem.vue';
 
 export interface NavItemArea {
   phrase: string,
   link: string,
 }
+
 defineProps<NavItemArea>()
 </script>
 
