@@ -55,16 +55,18 @@ export class UserController {
    */
   @Get("autologin")
   async autoLogin(
-    @Headers("Cookie") cookieString: string,
+    @Headers("Cookie") cookieString: string | undefined,
   ) {
-    const cookie = cookieParser.parse(cookieString) as { uid?: string }
-    if (cookie.uid) {
-      return await this.service.autoLogin(cookie.uid)
-    } else {
-      throw {
-        statusCode: 401,
-        message: "没有有效 cookie",
-        code: 1
+    if (cookieString) {
+      const cookie = cookieParser.parse(cookieString) as { uid?: string }
+      if (cookie.uid) {
+        return await this.service.autoLogin(cookie.uid)
+      } else {
+        throw {
+          statusCode: 401,
+          message: "没有有效 cookie",
+          code: 1
+        }
       }
     }
   }

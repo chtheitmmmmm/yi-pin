@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 import axios from 'axios';
 import { reactive, ref } from 'vue';
-import InputFormField from '@/components/rl-modal/InputFormField.vue';
-import { loginInputValidator } from '@/components/rl-modal/joiLrExtension';
+import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
+import { loginInputValidator } from '@/components/header/rl-modal/joiLrExtension';
 import type { RawUser } from '@/entities/user';
 
 const emits = defineEmits<{

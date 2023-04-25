@@ -1,4 +1,5 @@
-$secondary: #4dd8ab;
+$primary: #4dd8ab;
+$secondary: #d75656;
 @import "bootstrap/scss/bootstrap";
 
 $font-name: "FZBeiWeiKaiShu-S19S";
@@ -8,4 +9,10 @@ $font-name: "FZBeiWeiKaiShu-S19S";
 }
 * {
   font-family: $font-name;
+}
+
+body {
+  * {
+    scroll-behavior: smooth;
+  }
 }

@@ -7,9 +7,9 @@ function onRl(ifRegister: boolean) {
 </script>
 
 <template>
-  <div class='ctn'>
-    <button type='button' class='btn btn-primary' @click='onRl(true)'>注册</button>
-    <button type='button' class='btn btn-outline-primary' @click='onRl(false)'>登录</button>
+  <div class='ctn d-flex flex-column flex-lg-row'>
+    <div class='btn btn-primary m-1' @click='onRl(true)'>注册</div>
+    <div class='btn btn-outline-primary m-1' @click='onRl(false)'>登录</div>
   </div>
 </template>
 

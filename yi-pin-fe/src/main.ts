@@ -2,7 +2,9 @@ import { createApp } from 'vue'
 import '@/assets/app.scss'
 import axios from 'axios';
 import router from '@/router/router';
+import 'bootstrap/dist/js/bootstrap.min.js'
 import App from '@/App.vue';
+
 
 
 axios.defaults.baseURL = `${location.origin}/api`

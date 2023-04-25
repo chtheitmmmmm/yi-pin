@@ -6,7 +6,7 @@
 <template>
 <div class='container card'>
   <div class='card-header text-center'>
-    <img src='@/assets/logo.jpg' alt='公司LoGo'/>
+    <img src='../../../../assets/logo.jpg' alt='公司LoGo'/>
   </div>
   <div class='card-body'>
     <p>

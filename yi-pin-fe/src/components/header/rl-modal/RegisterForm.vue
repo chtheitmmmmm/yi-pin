@@ -1,8 +1,8 @@
 <script setup lang='ts'>
 
-import InputFormField from '@/components/rl-modal/InputFormField.vue';
+import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
 import { reactive, ref } from 'vue';
-import { registerInputValidator } from '@/components/rl-modal/joiLrExtension';
+import { registerInputValidator } from '@/components/header/rl-modal/joiLrExtension';
 import axios from 'axios';
 import type { RawUser } from '@/entities/user';
 

@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { User } from '../user/user';
 import { DataSource, Repository } from 'typeorm';
 
@@ -42,7 +42,6 @@ export class DbService {
         message: "用户已注册"
       }
     }
-    console.log(user)
     await this.userRepository.save(user)
   }
 

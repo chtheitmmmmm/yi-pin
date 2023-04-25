@@ -1,8 +1,5 @@
 <script setup lang='ts'>
 
-
-import { onMounted, ref } from 'vue';
-
 withDefaults(defineProps<{
   title: string,
   name: string,
