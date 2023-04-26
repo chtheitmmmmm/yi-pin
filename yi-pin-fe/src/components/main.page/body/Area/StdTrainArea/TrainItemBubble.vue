@@ -1,0 +1,120 @@
+<script setup lang="ts">
+import {onMounted, onUnmounted, reactive, ref} from "vue";
+
+const props = defineProps<{
+    // wild: number // 泡泡随机运动的程度，为正数
+}>()
+
+type ctnEle = HTMLDivElement
+const ctn = ref<ctnEle | null>(null)
+const wild = ref(0)
+let intervalHandle = ref(0)
+
+onMounted(() => {
+    ctn.value!.style.animationDelay = `${Math.random()}s`
+})
+
+onUnmounted(() => {
+    // clearInterval(intervalHandle.value)
+})
+
+</script>
+
+<template>
+<div class="ctn" ref="ctn">
+    <slot></slot>
+</div>
+</template>
+
+<style scoped lang="scss">
+@import "bootstrap/scss/bootstrap";
+$max_transform: 3%;
+$radius_delta: 10%;
+@keyframes float {
+    from {
+        transform: translate(0, 0);
+        border-radius: 50%;
+    }
+    20% {
+        transform: translate($max_transform, calc($max_transform / 2));
+        border: {
+            bottom: {
+                left-radius: calc(50% - $radius_delta);
+                right-radius: calc(50% + $radius_delta / 2.3);
+            }
+            top: {
+                left-radius: calc(50% + $radius_delta);
+                right-radius: calc(50% - $radius_delta / 2);
+            }
+        }
+    }
+    40% {
+        transform: translate(-$max_transform, - calc($max_transform / 2));
+        border: {
+            bottom: {
+                left-radius: calc(50% - $radius_delta / 1.1);
+                right-radius: calc(50% + $radius_delta / 2);
+            }
+            top: {
+                left-radius: calc(50% + $radius_delta);
+                right-radius: calc(50% - $radius_delta / 2);
+            }
+        }
+    }
+    60% {
+        transform: translate(-$max_transform / 2, calc($max_transform));
+        border: {
+            bottom: {
+                left-radius: calc(50% + $radius_delta / 2);
+                right-radius: calc(50% - $radius_delta);
+            }
+            top: {
+                left-radius: calc(50% - $radius_delta / 2);
+                right-radius: calc(50% + $radius_delta);
+            }
+        }
+    }
+    80% {
+      transform: translate($max_transform, - calc($max_transform / 2));
+        border: {
+            bottom: {
+                left-radius: calc(50% - $radius_delta / 3);
+                right-radius: calc(50% + $radius_delta / 2);
+            }
+            top: {
+                left-radius: calc(50% + $radius_delta / 1.3);
+                right-radius: calc(50% - $radius_delta / 2);
+            }
+        }
+    }
+    75% {
+        transform: translate(-$max_transform, - calc($max_transform / 2));
+        border: {
+            bottom: {
+                left-radius: calc(50% + $radius_delta);
+                right-radius: calc(50% - $radius_delta / 2);
+            }
+            top: {
+                left-radius: calc(50% - $radius_delta);
+                right-radius: calc(50% + $radius_delta / 2);
+            }
+        }
+    }
+    to {
+        transform: translate(0, 0);
+        border-radius: 50%;
+    }
+}
+
+.ctn {
+    background-color: $primary;
+    animation: float 10s infinite ease-in;
+    transform: translate(0, 0);
+    border-radius: 50%;
+    cursor: pointer;
+    &:hover {
+        animation: none;
+    }
+}
+
+</style>

@@ -2,38 +2,44 @@
 import type { NavItemArea } from '@/components/header/NavItem.vue';
 import Body from '@/components/main.page/body/Body.vue';
 import type { BodyArea } from '@/components/main.page/body/Body.vue';
-import ShortIntroArea from '@/components/main.page/body/Area/ShortIntroArea.vue';
-import NewsArea from '@/components/main.page/body/Area/NewsArea.vue';
-import BlogArea from '@/components/main.page/body/Area/BlogArea.vue';
-import BusArea from '@/components/main.page/body/Area/BusArea.vue';
+import PracExpArea from '@/components/main.page/body/Area/PracExpArea.vue';
+import NewsArea from '@/components/main.page/body/Area/PreTrainArea.vue';
+import TestsTrainArea from '@/components/main.page/body/Area/TestsTrainArea.vue';
 import PlanArea from "@/components/main.page/body/Area/PlanArea.vue";
 import {onMounted, ref} from "vue";
+import CopConArea from "@/components/main.page/body/Area/CopConArea.vue";
+import StdTrainArea from "@/components/main.page/body/Area/StdTrainArea/StdTrainArea.vue";
 
 const areas = [{  // 简介区域
   phrase: "实习体验",
   link: "area-si",
   tt: "实习体验",
-  slot: ShortIntroArea
+  slot: PracExpArea
 }, {
   phrase: "笔面试培训",
-  link: "area-bus",
+  link: "area-praexp",
   tt: "笔面试培训",
-  slot: BusArea
+  slot: TestsTrainArea
 }, {  // 新闻区域
-  phrase: "岗前",
-  link: "area-news",
+  phrase: "岗前培训",
+  link: "area-pre-train",
   tt: "岗前培训",
   slot: NewsArea
 }, {
-  phrase: "在岗",
-  link: "area-blogs",
-  tt: "在岗培训",
-  slot: BlogArea
+  phrase: "在岗业务",
+  link: "area-std-bus",
+  tt: "在岗业务",
+  slot: StdTrainArea
 }, {
-    phrase: "专属职生",
+    phrase: "专属职业规划",
     link: "area-plan",
-    tt: "专属职业生涯规划",
+    tt: "专属职业规划",
     slot: PlanArea
+}, {
+    phrase: "合作咨询",
+    link: "area-copcon",
+    tt: "合作咨询",
+    slot: CopConArea
 }]
 
 const anchors = ref<HTMLAnchorElement[] | null>(null)
@@ -41,12 +47,11 @@ const anchors = ref<HTMLAnchorElement[] | null>(null)
 onMounted(() => {
     anchors.value!.forEach(a => {
         a.addEventListener("click", e => {
-            e.preventDefault()
+            e.preventDefault()  // 一个小 hack
             location.hash = a.getAttribute("href")!;
         })
     })
 })
-
 
 </script>
 

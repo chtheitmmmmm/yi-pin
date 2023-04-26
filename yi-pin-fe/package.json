@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "vite",
-    "dep": "scp -r dist/* root@123.56.18.197:/www/server/nginx/html",
+    "dep": "python3 deploy-script/deploy.py ",
     "bad": "npm run build && npm run dep",
     "build": "run-p type-check build-only",
     "preview": "vite preview",
