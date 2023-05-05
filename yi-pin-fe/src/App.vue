@@ -91,19 +91,13 @@ function onLogined(u: RawUser) {
 
 .app-ctn {
   height: 100vh;
-  display: grid;
-  grid-template-rows: auto auto;
-  grid-template-columns: 1fr;
-  > * {
-    overflow: auto;
-  }
+  display: flex;
+  flex-direction: column;
   > .app-header {
-    grid-row: 1;
-    grid-column: 1;
   }
   > .app-page {
-    grid-row: 2;
-    grid-column: 1;
+    flex-grow: 1;
+    overflow: auto;
   }
 }
 </style>

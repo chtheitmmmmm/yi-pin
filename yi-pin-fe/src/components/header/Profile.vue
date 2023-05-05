@@ -1,6 +1,7 @@
 <script setup lang='ts'>
 
 import type { User } from '@/entities/user';
+import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
 
 defineProps<{
   userData: User
@@ -17,53 +18,43 @@ function onLogout() {
 </script>
 
 <template>
-<div class='dropdown container position-relative border-primary border-5 rounded-3 bg-info bg-opacity-10'>
-  <div class='dropdown-toggle ' data-bs-toggle='dropdown'>
-    <div style='display: inline-block'>
-      <img :src='userData.profile' alt='用户头像' />
-      <div>
-        <small>{{userData.account}}</small>
+<Popover>
+  <div class='dropdown container position-relative border-5 rounded-3 bg-info bg-opacity-10'>
+    <PopoverButton><div style='display: inline-block'>
+        <img :src='userData.profile' alt='用户头像' />
+        <div>
+          <small>{{userData.account}}</small>
+        </div>
       </div>
-    </div>
+    </PopoverButton>
+    <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+        <PopoverPanel class="absolute left-1/2 z-10 flex-column w-screen max-w-max -translate-x-1/2 px-4 bg-light border">
+          <li class="link-secondary">
+            <router-link to='/profile'>主页</router-link>
+          </li>
+          <li @click='onLogout' class="link-primary">
+            <a>退出登录</a>
+          </li>
+        </PopoverPanel>
+      </transition>
   </div>
-  <ul class='dropdown-menu'>
-    <li class='dropdown-item'>
-      <router-link to='/profile'></router-link>
-      主页
-    </li>
-    <li class='dropdown-item' @click='onLogout'>
-      退出登录
-    </li>
-  </ul>
-</div>
+</Popover>
 </template>
 
 <style scoped lang='scss'>
+@import "@/assets/app";
 .container {
   cursor: pointer;
   color: white;
   border-style: solid;
   padding: 0.1em 1em;
-  .dropdown-item {
-    position: relative;
-    alignment-baseline: center;
-    a {
-      display: block;
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      top: 0;
-      left: 0;
-    }
+  li {
+    list-style-type: none;
+    text-decoration: underline;
   }
-
 
   img {
     width: 2em;
   }
 }
-
-.dropdown-toggle::after {
-    display: none;
-  }
 </style>

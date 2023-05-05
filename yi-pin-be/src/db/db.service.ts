@@ -5,26 +5,24 @@ import { DataSource, Repository } from 'typeorm';
 @Injectable()
 export class DbService {
   private readonly dataSource = new DataSource({
-    type: "mysql",
-    host: "localhost",
-    port: 3306,
-    username: "root",
-    password: "",
-    database: "yp",
+    type: 'mysql',
+    username: 'root',
+    host: '127.0.0.1',
+    password: '',
+    database: 'yp',
     entities: [User],
     logging: true,
-    logger: "advanced-console",
-    synchronize: true
-  })
+    logger: 'advanced-console',
+    synchronize: true,
+  });
 
-  private readonly userRepository: Repository<User>
+  private readonly userRepository: Repository<User>;
 
   constructor() {
-    this.dataSource.initialize()
-      .catch(reason => {
-        throw reason
-      })
-    this.userRepository = this.dataSource.getRepository(User)
+    this.dataSource.initialize().catch((reason) => {
+      throw reason;
+    });
+    this.userRepository = this.dataSource.getRepository(User);
   }
 
   /**
@@ -34,15 +32,17 @@ export class DbService {
    * @param user
    */
   async userRegister(user: User) {
-    if (await this.userRepository.findOneBy({
-      account: user.account
-    })) {
+    if (
+      await this.userRepository.findOneBy({
+        account: user.account,
+      })
+    ) {
       throw {
         statusCode: 403,
-        message: "用户已注册"
-      }
+        message: '用户已注册',
+      };
     }
-    await this.userRepository.save(user)
+    await this.userRepository.save(user);
   }
 
   /**
@@ -53,22 +53,22 @@ export class DbService {
    */
   async userLogin(account: string, password: string) {
     const user = await this.userRepository.findOneBy({
-      account
-    })
+      account,
+    });
     if (user) {
       if (user.password !== password) {
         throw {
           statusCode: 403,
-          message: "密码错误"
-        }
+          message: '密码错误',
+        };
       }
     } else {
       throw {
         statusCode: 403,
-        message: "用户未注册"
-      }
+        message: '用户未注册',
+      };
     }
-    return user
+    return user;
   }
 
   /**
@@ -77,11 +77,11 @@ export class DbService {
    */
   async userAutoLogin(uid: string) {
     const user = await this.userRepository.findOneBy({
-      uid
-    })
+      uid,
+    });
     if (!user) {
-      throw "无效的 cookie"
+      throw '无效的 cookie';
     }
-    return user
+    return user;
   }
 }

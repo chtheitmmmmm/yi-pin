@@ -1,12 +1,13 @@
 <script setup lang='ts'>
-const trains = [{
-  tt: "支农培训",
+const businesses = [{
+  tt: "支农体验",
+  src: ""
 }, {
-  tt: "支教培训"
+  tt: "支教体验"
 }, {
-  tt: "支医培训",
+  tt: "支医体验",
 }, {
-  tt: "扶贫培训"
+  tt: "扶贫体验"
 }]
 
 </script>
@@ -14,17 +15,19 @@ const trains = [{
 <template>
 <table class='container table-primary table-hover'>
   <tbody class='card-group'>
-    <tr v-for='t of trains' class='container bg-opacity-10 card'>
+    <tr v-for='bus of businesses' class='container bg-opacity-10 card'>
         <td class='card-header'>
-          <img :src='`/trains/${t.tt}.png`' :alt='t.tt'>
+          <img :src='`/praexp/${bus.tt}.jpg`' :alt='bus.tt'>
         </td>
         <td class='card-body'>
+
         </td>
         <td class='card-footer text-center'>
-          <button class='btn btn-outline-primary'> {{ t.tt }} </button>
+          <button class='btn btn-outline-primary'> {{ bus.tt }} </button>
         </td>
     </tr>
   </tbody>
+
 </table>
 </template>
 

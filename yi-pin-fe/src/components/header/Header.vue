@@ -6,13 +6,15 @@ import Login from '@/components/header/Login.vue';
 import type { User } from '@/entities/user';
 import { reactive } from 'vue';
 import Profile from '@/components/header/Profile.vue';
+import {Popover} from "@headlessui/vue";
 
 defineProps<{
   pages: {
     phrase: string,
     path: string,
-    component: any
-  }
+    component: any,
+    hashList: string[];
+  }[]
 }>()
 
 defineExpose({
@@ -66,7 +68,7 @@ function onLogout() {
     <div tabindex="-1" class='nav-item w-50 offcanvas-lg offcanvas-start ' id="nav-item-offcanvas">
       <div class="navbar d-sm-block d-lg-flex">
         <div v-for="page of pages" class="nav-item">
-          <NavItem :phrase='page.phrase' :link='page.path'/>
+          <NavItem :phrase='page.phrase' :path='page.path' :hash-list="page.hashList"/>
         </div>
       </div>
     </div>

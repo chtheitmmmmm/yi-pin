@@ -1,21 +1,10 @@
 <script setup lang="ts">
-import {onMounted, onUnmounted, reactive, ref} from "vue";
+import {onMounted, ref} from "vue";
 
-const props = defineProps<{
-    // wild: number // 泡泡随机运动的程度，为正数
-}>()
-
-type ctnEle = HTMLDivElement
-const ctn = ref<ctnEle | null>(null)
-const wild = ref(0)
-let intervalHandle = ref(0)
+const ctn = ref<HTMLDivElement | null>(null)
 
 onMounted(() => {
     ctn.value!.style.animationDelay = `${Math.random()}s`
-})
-
-onUnmounted(() => {
-    // clearInterval(intervalHandle.value)
 })
 
 </script>
@@ -62,7 +51,7 @@ $radius_delta: 10%;
         }
     }
     60% {
-        transform: translate(-$max_transform / 2, calc($max_transform));
+        transform: translate(- calc($max_transform / 2), calc($max_transform));
         border: {
             bottom: {
                 left-radius: calc(50% + $radius_delta / 2);

@@ -2,18 +2,15 @@ import {
   ArgumentMetadata,
   BadRequestException,
   Controller,
-  Get, Header,
+  Get,
   Injectable,
   PipeTransform,
-  Post, Req,
 } from '@nestjs/common';
 import { AppService } from './app.service';
 import { ObjectSchema } from 'joi';
-import { Request } from 'express';
 
 @Injectable()
 export class JoiValidationPipe implements PipeTransform {
-
   constructor(private schema: ObjectSchema) {}
 
   transform(value: any, metadata: ArgumentMetadata) {
@@ -31,8 +28,8 @@ export class AppController {
   /**
    * The hello world api
    */
-  @Get("api/hw")
+  @Get('api/hw')
   getHelloWorld(): string {
-    return "Hello world"
+    return 'Hello world';
   }
 }

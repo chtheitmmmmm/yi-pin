@@ -1,5 +1,5 @@
 <script setup lang='ts'>
-import type { BodyArea } from '@/components/main.page/body/Body.vue';
+import type { BodyArea } from '@/components/body/Body.vue';
 
 const props = defineProps<{
   a: BodyArea
@@ -15,7 +15,7 @@ const props = defineProps<{
       {{ a.tt }}
     </div>
   </div>
-  <div class='container collapse show card bg-opacity-10 bg-secondary'>
+  <div class='container show card bg-opacity-10 bg-secondary'>
     <div class='card-body'>
       <slot></slot>
     </div>

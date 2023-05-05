@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 
-import TrainItemBubble from "@/components/main.page/body/Area/StdTrainArea/TrainItemBubble.vue";
+import TrainItemBubble from "@/components/main.page/areas/std-train-area/TrainItemBubble.vue";
 
 const links = [{
     name: "工作总结及述职报告",
