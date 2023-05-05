@@ -11,9 +11,9 @@ const props = defineProps<{
 <template>
 <div class='container'>
   <div class='navbar'>
-    <div class='h1 text-secondary'  :id='a.link'>
+    <h1 class='h1 text-secondary'  :id='a.link'>
       {{ a.tt }}
-    </div>
+    </h1>
   </div>
   <div class='container show card bg-opacity-10 bg-secondary'>
     <div class='card-body'>

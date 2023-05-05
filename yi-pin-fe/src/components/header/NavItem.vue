@@ -1,7 +1,7 @@
 <script setup lang='ts'>
 
-import FillRouterLink from "@/components/FillRouterLink.vue";
-import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {onMounted, ref} from "vue";
 
 export interface NavItemArea {
   phrase: string,
@@ -11,6 +11,39 @@ export interface NavItemArea {
 
 const props = defineProps<NavItemArea>()
 const ifLIst = props.hashList.length > 0;
+const popover = ref<HTMLButtonElement | null>(null)
+onMounted(() => {
+    if (popover.value) {
+        popover.value.dataset.hoverOn = "false";
+    }
+
+    popover.value?.addEventListener('pointerenter', () => {
+        if (popover.value!.dataset.hoverOn === "false") {
+            popover.value!.dispatchEvent(new Event('click', {
+              bubbles: true
+          }))
+        }
+    })
+    popover.value?.addEventListener('pointerout', e => {
+        if (popover.value!.dataset.hoverOn === "true") {
+            const rect = popover.value!.getBoundingClientRect()
+            if (e.clientY < rect.bottom) {
+                popover.value!.dispatchEvent(new Event('click', {
+                  bubbles: true
+              }))
+            }
+        }
+    })
+    popover.value?.addEventListener('click', () => {
+        if (popover.value!.dataset.hoverOn === "true") {
+            popover.value!.dataset.hoverOn = "false"
+        } else {
+            popover.value!.dataset.hoverOn = "true"
+        }
+
+    })
+})
+
 
 </script>
 
@@ -18,11 +51,11 @@ const ifLIst = props.hashList.length > 0;
   <div class="nav-item" style="position: relative">
     <Popover v-if="ifLIst" class="relative">
       <PopoverButton>
-        <span class="phrase">{{phrase}}</span>
+        <span class="phrase" ref="popover" :data-hover-on="false">{{phrase}}</span>
       </PopoverButton>
       <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
         <PopoverPanel class="absolute left-1/2 z-10 flex-column w-screen max-w-max -translate-x-1/2 px-4 bg-light border">
-          <div v-for="hash of hashList">
+          <div v-for="hash of hashList" >
             <router-link :to="`${path}/#${hash}`">{{ hash }}</router-link>
           </div>
         </PopoverPanel>
