@@ -3,14 +3,16 @@ import {links} from "@/entities/pages";
 import Header from "@/components/header/Header.vue";
 import RlModal from "@/components/header/rl-modal/RlModal.vue";
 import type {RawUser, User} from "@/entities/user";
-import {nextTick, onMounted, reactive, ref} from "vue";
+import {inject, nextTick, onMounted, reactive, ref} from "vue";
 import LoginToast from "@/components/login-toast/LoginToast.vue";
 import jsCookie from "js-cookie";
 import axios from "axios";
+import type {Session} from "@/entities/session";
 
 const loginModal = ref<typeof RlModal | null>(null)
 const loginToast = ref<typeof LoginToast | null>(null)
 const header = ref<typeof Header | null>(null)
+const session = inject<Session>('session')!
 
 onMounted(() => {
   axios.get("user/autologin")
@@ -30,17 +32,7 @@ const user = reactive<{
 })
 
 function login(rawUser: RawUser) {
-  user.data = {
-    ...rawUser,
-    profile: URL.createObjectURL(
-      new Blob(
-        [new Int8Array(rawUser.profile.data)],
-        { type: "image/png" }
-      )
-    )
-  }
-  user.logined = true;
-  header.value!.onLogined(user.data)
+  session.login(rawUser)
   nextTick(() => {
     loginToast.value!.show()
   })
@@ -72,11 +64,11 @@ function onLogined(u: RawUser) {
 <template>
 <div class="app-ctn">
   <div class="app-header">
-    <Header :pages='links as any' @rl="onRl" @logout="onLogout" ref="header" style="grid-area: header"/>
+    <Header :pages='links as any' @rl="onRl" @logout="onLogout" ref="header"/>
   </div>
   <div class="app-page">
     <router-view></router-view>
-    <LoginToast :user-data='user.data!' v-if='user.logined' ref='loginToast'/>
+    <LoginToast :user-data='session.user' v-if='session.user' ref='loginToast'/>
     <RlModal ref='loginModal' @logined='onLogined'/>
   </div>
 

@@ -10,7 +10,7 @@ const modal = ref<HTMLDivElement | null>(null)
 let theModal = reactive<Modal>({} as unknown as Modal)
 
 defineExpose<{
-  show: () => void,
+  show: (ir: boolean) => void,
   hide: () => void
 }>({
   show,
@@ -18,15 +18,16 @@ defineExpose<{
 })
 
 const emits = defineEmits<{
-  (e: "logined", user: RawUser): void
+  (e: "logined", user: RawUser, sid: string): void
 }>()
 
 onMounted(() => {
   theModal = new Modal(modal.value!)
 })
 
-function show() {
-  theModal.show()
+function show(ir: boolean) {
+    ifRegister.value = ir;
+    theModal.show()
 }
 
 function hide() {
@@ -37,8 +38,8 @@ function onSwitchRl() {
   ifRegister.value = !ifRegister.value
 }
 
-function onLogined(user: RawUser) {
-  emits('logined', user)
+function onLogined(user: RawUser, sid: string) {
+  emits('logined', user, sid)
 }
 
 </script>

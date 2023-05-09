@@ -4,9 +4,10 @@ import NavItem from './NavItem.vue';
 import type { NavItemArea } from '@/components/header/NavItem.vue';
 import Login from '@/components/header/Login.vue';
 import type { User } from '@/entities/user';
-import { reactive } from 'vue';
+import {inject, reactive} from 'vue';
 import Profile from '@/components/header/Profile.vue';
 import {Popover} from "@headlessui/vue";
+import type {Session} from "@/entities/session";
 
 defineProps<{
   pages: {
@@ -17,36 +18,21 @@ defineProps<{
   }[]
 }>()
 
-defineExpose({
-  onLogined
-})
+const session = inject<Session>('session')!
 
 const emits = defineEmits<{
   (e: "rl", ifRegister: boolean): void,
   (e: "logout"): void
 }>()
 
-let user = reactive<{
-  logined: boolean,
-  data: User | null
-}>({
-  logined: false,
-  data: null
-})
-
 function onRl(ifRegister: boolean) {
   emits('rl', ifRegister)
 }
 
-function onLogined(u: User) {
-  user.data = u
-  user.logined = true
-}
-
 function onLogout() {
-  emits("logout")
-  user.logined = false
-  user.data = null
+  session.user = null
+  session.id = null
+  emits('logout')
 }
 
 </script>
@@ -73,8 +59,8 @@ function onLogout() {
       </div>
     </div>
     <div class='nav-item'>
-      <Login @rl='onRl' v-if='!user.logined'/>
-      <Profile v-else :user-data='user.data!' @logout='onLogout'/>
+      <Login @rl='onRl' v-if='!session.user'/>
+      <Profile v-else :user-data='session.user' @logout='onLogout'/>
     </div>
   </div>
   </div>

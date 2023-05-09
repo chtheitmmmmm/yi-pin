@@ -1,6 +1,6 @@
 <script setup lang='ts'>
 
-import {PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
 import {onMounted, ref} from "vue";
 
 export interface NavItemArea {
@@ -50,7 +50,7 @@ onMounted(() => {
 <template>
   <div class="nav-item" style="position: relative">
     <Popover v-if="ifLIst" class="relative">
-      <PopoverButton>
+      <PopoverButton class="hover:border-none">
         <span class="phrase" ref="popover" :data-hover-on="false">{{phrase}}</span>
       </PopoverButton>
       <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">

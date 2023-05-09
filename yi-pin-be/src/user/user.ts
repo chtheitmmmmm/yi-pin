@@ -1,42 +1,50 @@
-import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn, Unique } from 'typeorm';
+import {
+  Column,
+  Entity,
+  PrimaryColumn,
+  PrimaryGeneratedColumn,
+  Unique,
+} from 'typeorm';
 import * as fs from 'fs';
 import { v1, v4 } from 'uuid';
 import * as path from 'path';
 
 export interface UserRegisterInfo {
-  account: User['account']
-  password: User['password']
+  account: User['account'];
+  password: User['password'];
 }
 
 @Entity()
-export class User implements User {
-  @PrimaryGeneratedColumn("uuid")
-  uid: string = v4()
+export class User {
+  @PrimaryGeneratedColumn('uuid')
+  uid: string = v4();
 
-  @Column("tinytext")
-  nickname: string = 'yp-' + v1()
+  @Column('tinytext')
+  nickname: string = 'yp-' + v1();
 
-  @PrimaryColumn("varchar", {
-    length: 255
+  @PrimaryColumn('varchar', {
+    length: 255,
   })
-  account: string
+  account: string;
 
-  @Column("tinytext")
-  password: string
+  @Column('tinytext')
+  password: string;
 
-  @Column("blob")
-  profile: Buffer = fs.readFileSync(path.resolve(__dirname, "../../assets/user-default-profile.png"))
+  @Column('blob')
+  profile: Buffer = fs.readFileSync(
+    path.resolve(__dirname, '../../assets/user-default-profile.png'),
+  );
 
-  @Column("timestamp")
-  registerTime: Date = new Date()
+  @Column('timestamp')
+  registerTime: Date = new Date();
 
-  @Column("tinyint")
-  type: number = 127        // user type
+  @Column('tinyint')
+  type = 127; // user type
 
   constructor(userRegisterInfo?: UserRegisterInfo) {
     if (userRegisterInfo !== undefined) {
-      this.account = userRegisterInfo.account
-      this.password = userRegisterInfo.password
+      this.account = userRegisterInfo.account;
+      this.password = userRegisterInfo.password;
     }
   }
 }

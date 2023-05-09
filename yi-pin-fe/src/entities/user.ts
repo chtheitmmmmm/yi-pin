@@ -22,11 +22,3 @@ export interface User {
   registerTime: Date
   type: number
 }
-
-const user = reactive<{
-  logined: boolean,
-  info: null | User
-}>({
-  logined: false,
-  info: null
-})

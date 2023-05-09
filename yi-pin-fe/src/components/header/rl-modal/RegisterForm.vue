@@ -1,10 +1,11 @@
 <script setup lang='ts'>
 
 import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
-import { reactive, ref } from 'vue';
+import {inject, reactive, ref} from 'vue';
 import { registerInputValidator } from '@/components/header/rl-modal/joiLrExtension';
 import axios from 'axios';
 import type { RawUser } from '@/entities/user';
+import type {Session} from "@/entities/session";
 
 const emits = defineEmits<{
   (e: "logined", user: RawUser): void
@@ -20,6 +21,8 @@ const registerError = reactive({
   hasError: false,
   errMessage: ''
 })
+
+const session = inject<Session>('session')
 
 const registering = ref(false)
 

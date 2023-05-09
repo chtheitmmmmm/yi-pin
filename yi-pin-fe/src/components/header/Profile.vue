@@ -18,26 +18,25 @@ function onLogout() {
 </script>
 
 <template>
-<Popover>
-  <div class='dropdown container position-relative border-5 rounded-3 bg-info bg-opacity-10'>
-    <PopoverButton><div style='display: inline-block'>
-        <img :src='userData.profile' alt='用户头像' />
-        <div>
-          <small>{{userData.account}}</small>
-        </div>
+<Popover class='dropdown container position-relative border-5 rounded-3 bg-info bg-opacity-10'>
+  <PopoverButton>
+    <div style='display: inline-block'>
+      <img :src='userData.profile' alt='用户头像' />
+      <div>
+        <small>{{userData.account}}</small>
       </div>
-    </PopoverButton>
-    <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
-        <PopoverPanel class="absolute left-1/2 z-10 flex-column w-screen max-w-max -translate-x-1/2 px-4 bg-light border">
-          <li class="link-secondary">
-            <router-link to='/profile'>主页</router-link>
-          </li>
-          <li @click='onLogout' class="link-primary">
-            <a>退出登录</a>
-          </li>
-        </PopoverPanel>
-      </transition>
-  </div>
+    </div>
+  </PopoverButton>
+  <Transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
+      <PopoverPanel class="absolute left-1/2 z-10 flex-column w-screen max-w-max -translate-x-1/2 px-4 bg-light border">
+        <li class="link-secondary">
+          <router-link to='/profile'>主页</router-link>
+        </li>
+        <li @click='onLogout' class="link-primary">
+          <a>退出登录</a>
+        </li>
+      </PopoverPanel>
+    </Transition>
 </Popover>
 </template>
 

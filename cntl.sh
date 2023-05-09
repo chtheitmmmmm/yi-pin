@@ -1,0 +1,1 @@
+cat `find yi-pin-be/src | grep "\.ts$"` `find yi-pin-fe/src | grep "\.vue$"` `find yi-pin-fe/src | grep "\.ts$"` | wc -l
