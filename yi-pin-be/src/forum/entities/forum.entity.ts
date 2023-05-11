@@ -26,10 +26,6 @@ export interface ForumInter {
    */
   id: string;
   /**
-   * 帖子的赞数
-   */
-  like: number;
-  /**
    * 标题
    */
   title: string;
@@ -52,9 +48,6 @@ export class Forum implements ForumInter {
 
   @Column('text')
   content: string;
-
-  @Column('integer')
-  like = 0;
 
   @Column('tinytext')
   title: string;

@@ -58,7 +58,7 @@ function onLogined(user: RawUser, sid: string) {
           </div>
           <div>
             <KeepAlive>
-              <component :is='ifRegister ? RegisterForm : LoginForm' @logined='onLogined'/>
+              <component :is='ifRegister ? RegisterForm : LoginForm as any' @close="hide"/>
             </KeepAlive>
           </div>
         </div>

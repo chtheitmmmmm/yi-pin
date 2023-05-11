@@ -1,10 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { User } from '../user/user';
+import { User } from '../user/entities/user.entity';
 import { DataSource, Repository } from 'typeorm';
-import { Forum } from '../forum/entities/forum.entity';
+import { Forum, ForumInter } from '../forum/entities/forum.entity';
 import { Collection } from '../collection/entities/collection.entity';
 import { Comment } from '../comment/entities/comment.entity';
-import { ForumNotFoundException } from '../exception/forum-not-found.exception';
+import { Like } from '../like/entities/like.entity';
+import { ServiceResult } from '../exception/exception';
 
 @Injectable()
 export class DbService {
@@ -14,7 +15,7 @@ export class DbService {
     host: '127.0.0.1',
     password: '',
     database: 'yp',
-    entities: [User, Forum, Collection, Comment],
+    entities: [User, Forum, Collection, Comment, Like],
     logging: true,
     logger: 'advanced-console',
     synchronize: true,
@@ -24,6 +25,7 @@ export class DbService {
   private readonly forumRepository: Repository<Forum>;
   private readonly collectionRepository: Repository<Collection>;
   private readonly commentRepository: Repository<Comment>;
+  private readonly likeRepository: Repository<Like>;
 
   constructor() {
     this.dataSource.initialize().catch((reason) => {
@@ -37,16 +39,17 @@ export class DbService {
     this.collectionRepository = this.dataSource.getRepository(Collection);
     // 评论数据库
     this.commentRepository = this.dataSource.getRepository(Comment);
+    // 点赞数据库
+    this.likeRepository = this.dataSource.getRepository(Like);
   }
-
   /**
    * 是否能按照uid找到用户
    */
-  async hasUser(uid: string) {
-    return (
+  async hasUser(uid: string): Promise<ServiceResult> {
+    return ServiceResult.ok(
       (await this.userRepository.findOneBy({
         uid,
-      })) !== null
+      })) !== null,
     );
   }
 
@@ -57,13 +60,16 @@ export class DbService {
    * @param user
    */
   async userRegister(user: User) {
-    if (await this.hasUser(user.uid)) {
-      throw {
-        statusCode: 403,
-        message: '用户已注册',
-      };
+    if (
+      (await this.userRepository.findOneBy({
+        account: user.account,
+      })) !== null
+    ) {
+      throw ServiceResult.userHasExisted();
+    } else {
+      await this.userRepository.save(user);
+      return ServiceResult.ok(user);
     }
-    await this.userRepository.save(user);
   }
 
   /**
@@ -76,20 +82,15 @@ export class DbService {
     const user = await this.userRepository.findOneBy({
       account,
     });
-    if (user) {
-      if (user.password !== password) {
-        throw {
-          statusCode: 403,
-          message: '密码错误',
-        };
-      }
+    if (user === null) {
+      throw ServiceResult.userDontExists();
     } else {
-      throw {
-        statusCode: 403,
-        message: '用户未注册',
-      };
+      if (user.password !== password) {
+        throw ServiceResult.userPasswordWrong();
+      } else {
+        return ServiceResult.ok(user);
+      }
     }
-    return user;
   }
 
   /**
@@ -100,10 +101,11 @@ export class DbService {
     const user = await this.userRepository.findOneBy({
       uid,
     });
-    if (!user) {
-      throw '无效的 cookie';
+    if (user === null) {
+      throw ServiceResult.userDontExists();
+    } else {
+      return ServiceResult.ok(user);
     }
-    return user;
   }
 
   /**
@@ -114,26 +116,27 @@ export class DbService {
     const user = await this.userRepository.findOneBy({
       uid,
     });
-    if (!user) {
-      throw '无效的 uid';
+    if (user === null) {
+      throw ServiceResult.userDontExists();
+    } else {
+      return ServiceResult.ok({
+        uid: user.uid,
+        nickname: user.nickname,
+        account: user.account,
+        profile: user.profile,
+        type: user.type,
+      });
     }
-    return {
-      uid: user.uid,
-      nickname: user.nickname,
-      account: user.account,
-      profile: user.profile,
-      type: user.type,
-    };
   }
 
   /**
    * 是否能按照fid找到forum
    */
   async hasForum(fid: string) {
-    return (
+    return ServiceResult.ok(
       (await this.forumRepository.findOneBy({
         id: fid,
-      })) !== null
+      })) !== null,
     );
   }
 
@@ -142,36 +145,50 @@ export class DbService {
    */
   async createForum(forum: Forum) {
     await this.forumRepository.save(forum);
+    return ServiceResult.ok();
+  }
+
+  async findAllForum(uid: string, type: ForumInter['type']) {
+    const allForums = await this.forumRepository.findBy({
+      type,
+    });
+    const allData = [];
+    for (let i = 0; i < allForums.length; ++i) {
+      const f = allForums[i];
+      allData[i] = {
+        id: f.id,
+        title: f.title,
+        'create-time': f['create-time'],
+        like: (await this.getForumLikeNum(f.id)).data,
+        collection: (await this.findAllForumCollectionNum(f.id)).data,
+        comment: (await this.getForumCommentNum(f.id)).data,
+        ifLike: (await this.ifUserLikeForum(uid, f.id)).data,
+        ifCollected: (await this.ifUserCollectForum(uid, f.id)).data,
+      };
+    }
+    return ServiceResult.ok(allData);
   }
 
   /**
    * 获取所有论坛帖子，用于列表显示
    */
-  async findAllForumForum() {
-    const allForums = await this.forumRepository.findBy({
-      type: 0,
-    });
-    const allData = [];
-    for (let i = 0; i < allForums.length; ++i) {
-      const f = allForums[i];
-      allData[i] = {
-        id: f.id,
-        title: f.title,
-        'create-time': f['create-time'],
-        like: f.like,
-        collection: await this.findAllForumCollectionNum(f.id),
-        comment: await this.getForumCommentNum(f.id),
-      };
-    }
-    return allData;
+  async findAllForumForum(uid: string) {
+    return await this.findAllForum(uid, 0);
   }
 
   /**
    * 获取所有的咨询帖子，用于列表展示
    */
-  async findAllConsultForum() {
+  async findAllConsultForum(uid: string) {
+    return await this.findAllForum(uid, 1);
+  }
+
+  /**
+   * 游客模式查看所有帖子
+   */
+  async findAllForumNoAuth(type: ForumInter['type']) {
     const allForums = await this.forumRepository.findBy({
-      type: 1,
+      type,
     });
     const allData = [];
     for (let i = 0; i < allForums.length; ++i) {
@@ -180,24 +197,40 @@ export class DbService {
         id: f.id,
         title: f.title,
         'create-time': f['create-time'],
-        like: f.like,
-        collection: await this.findAllForumCollectionNum(f.id),
-        comment: await this.getForumCommentNum(f.id),
+        like: (await this.getForumLikeNum(f.id)).data,
+        collection: (await this.findAllForumCollectionNum(f.id)).data,
+        comment: (await this.getForumCommentNum(f.id)).data,
       };
     }
-    return allData;
+    return ServiceResult.ok(allData);
+  }
+
+  /**
+   * 游客模式查看所有论坛帖子
+   */
+  async findAllForumForumNoAuth() {
+    return await this.findAllForumNoAuth(0);
+  }
+
+  /**
+   * 游客模式查看所有咨询帖子
+   */
+  async findAllConsultForumNoAuth() {
+    return await this.findAllForumNoAuth(1);
   }
 
   /**
    * 获取一个帖子的详细信息，用于展示
    */
   async findOneForum(id: string) {
-    if (await this.hasForum(id)) {
-      return await this.forumRepository.findOneBy({
-        id,
-      });
+    if ((await this.hasForum(id)).data) {
+      return ServiceResult.ok(
+        await this.forumRepository.findOneBy({
+          id,
+        }),
+      );
     } else {
-      throw new ForumNotFoundException();
+      throw ServiceResult.forumDontExists();
     }
   }
 
@@ -205,10 +238,10 @@ export class DbService {
    * 收藏已经存在
    */
   async hasCollection(id: string) {
-    return (
+    return ServiceResult.ok(
       (await this.collectionRepository.findOneBy({
         id,
-      })) !== null
+      })) !== null,
     );
   }
 
@@ -216,13 +249,11 @@ export class DbService {
    * 创建收藏
    */
   async createCollection(collection: Collection) {
-    if (this.hasCollection(collection.id)) {
-      throw {
-        errCode: 2,
-        errMsg: '创建的收藏已存在',
-      };
+    if ((await this.hasCollection(collection.id)).data) {
+      throw ServiceResult.collectionHasExisted();
     } else {
       await this.collectionRepository.save(collection);
+      return ServiceResult.ok();
     }
   }
 
@@ -230,28 +261,32 @@ export class DbService {
    * 找到用户的所有收藏
    */
   async findAllUserCollection(uid: string) {
-    return await this.collectionRepository.findBy({
-      uid,
-    });
+    return ServiceResult.ok(
+      await this.collectionRepository.findBy({
+        uid,
+      }),
+    );
   }
 
   /**
    * 找到对应forum的collection数目
    */
   async findAllForumCollectionNum(fid: string) {
-    return await this.collectionRepository.countBy({
-      fid,
-    });
+    return ServiceResult.ok(
+      await this.collectionRepository.countBy({
+        fid,
+      }),
+    );
   }
 
   /**
    * 是否已经有 comment
    */
   async hasComment(id: string) {
-    return (
+    return ServiceResult.ok(
       (await this.commentRepository.findOneBy({
         id,
-      })) !== null
+      })) !== null,
     );
   }
 
@@ -259,13 +294,11 @@ export class DbService {
    * 创建 comment
    */
   async createComment(comment: Comment) {
-    if (await this.hasComment(comment.id)) {
-      throw {
-        errCode: 2,
-        errMsg: '注释已存在',
-      };
+    if ((await this.hasComment(comment.id)).data) {
+      throw ServiceResult.commentHasExisted();
     } else {
       await this.commentRepository.save(comment);
+      return ServiceResult.ok();
     }
   }
 
@@ -273,8 +306,74 @@ export class DbService {
    * 获取某个 forum 的评论数目
    */
   async getForumCommentNum(fid: string) {
-    return await this.commentRepository.countBy({
-      fid,
-    });
+    return ServiceResult.ok(
+      await this.commentRepository.countBy({
+        fid,
+      }),
+    );
+  }
+
+  /**
+   * 点赞是否存在
+   */
+  async hasLike(id: string) {
+    return ServiceResult.ok(
+      (await this.likeRepository.findOneBy({
+        id,
+      })) !== null,
+    );
+  }
+
+  /**
+   * 新建点赞
+   */
+  async createLike(like: Like) {
+    if ((await this.hasLike(like.id)).data) {
+      throw ServiceResult.likeHasExisted();
+    } else {
+      await this.likeRepository.save(like);
+      return ServiceResult.ok();
+    }
+  }
+
+  /**
+   * 获取帖子的赞数
+   */
+  async getForumLikeNum(fid: string) {
+    if ((await this.hasForum(fid)).data) {
+      return ServiceResult.ok(
+        await this.likeRepository.countBy({
+          fid,
+        }),
+      );
+    } else {
+      return ServiceResult.forumDontExists();
+    }
+  }
+
+  /**
+   * 获取用户是否点赞过该内容
+   */
+  async ifUserLikeForum(uid: string, fid: string) {
+    return ServiceResult.ok(
+      (await this.likeRepository.countBy({
+        uid,
+        fid,
+      })) > 0,
+    );
+  }
+
+  /**
+   * 获取用户是否收藏过该内容
+   * @param uid
+   * @param fid
+   */
+  async ifUserCollectForum(uid: string, fid: string) {
+    return ServiceResult.ok(
+      (await this.collectionRepository.countBy({
+        uid,
+        fid,
+      })) > 0,
+    );
   }
 }

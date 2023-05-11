@@ -3,10 +3,8 @@ import Logo from "./Logo.vue";
 import NavItem from './NavItem.vue';
 import type { NavItemArea } from '@/components/header/NavItem.vue';
 import Login from '@/components/header/Login.vue';
-import type { User } from '@/entities/user';
-import {inject, reactive} from 'vue';
+import { inject } from 'vue';
 import Profile from '@/components/header/Profile.vue';
-import {Popover} from "@headlessui/vue";
 import type {Session} from "@/entities/session";
 
 defineProps<{
@@ -22,7 +20,6 @@ const session = inject<Session>('session')!
 
 const emits = defineEmits<{
   (e: "rl", ifRegister: boolean): void,
-  (e: "logout"): void
 }>()
 
 function onRl(ifRegister: boolean) {
@@ -30,9 +27,7 @@ function onRl(ifRegister: boolean) {
 }
 
 function onLogout() {
-  session.user = null
-  session.id = null
-  emits('logout')
+  session.logout()
 }
 
 </script>

@@ -23,7 +23,7 @@ watch(
           fid: props.fid
         }
       }).then(value => {
-        const d = value.data
+        const d = value.data.data
         forum.value.title = d.title
         forum.value.content = marked.parse(d.content)
       }).catch(err => {

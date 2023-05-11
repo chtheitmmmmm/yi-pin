@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateForumDto } from './dto/create-forum.dto';
-import { UpdateForumDto } from './dto/update-forum.dto';
 import { DbService } from '../db/db.service';
 import { Forum } from './entities/forum.entity';
 
@@ -14,23 +13,26 @@ export class ForumService {
     newForum.title = createForumDto.title;
     newForum.type = createForumDto.type;
     newForum.content = createForumDto.content;
-    await this.dbService.createForum(newForum);
+    return await this.dbService.createForum(newForum);
   }
 
-  async findAll() {
-    // todo
-    return;
+  async findAllForumForum(uid: string) {
+    return await this.dbService.findAllForumForum(uid);
   }
 
-  findOne(id: string) {
-    return `This action returns a #${id} forum`;
+  async findAllConsultForum(uid: string) {
+    return await this.dbService.findAllConsultForum(uid);
   }
 
-  update(id: number, updateForumDto: UpdateForumDto) {
-    return `This action updates a #${id} forum`;
+  async findAllForumForumNoAuth() {
+    return await this.dbService.findAllForumForumNoAuth();
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} forum`;
+  async findAllConsultForumNoAuth() {
+    return await this.dbService.findAllConsultForumNoAuth();
+  }
+
+  async findOneForum(fid: string) {
+    return await this.dbService.findOneForum(fid);
   }
 }

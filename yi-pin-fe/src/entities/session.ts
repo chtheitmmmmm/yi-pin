@@ -1,11 +1,13 @@
 import {reactive} from "vue";
 import type {User} from "@/entities/user";
 import type {RawUser} from "@/entities/user";
+import jsCookie from "js-cookie";
 
 export interface Session {
     id: null | string,
     user: null | User,
     login(rawUser: RawUser): void;
+    logout(): void;
 }
 
 export const session = reactive<Session>({
@@ -22,5 +24,10 @@ export const session = reactive<Session>({
               )
             )
         }
+    },
+    logout() {
+        this.id = null;
+        this.user = null;
+        jsCookie.remove('uid')
     }
 })

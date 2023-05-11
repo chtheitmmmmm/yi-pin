@@ -43,7 +43,7 @@ onMounted(() => {
 
 <template>
 <div class="form-editor flex">
-  <div class="w-1/2 p-2 border-2 flex flex-col">
+  <div class="w-1/2 p-2 outline-2 outline outline-emerald-200 flex flex-col h-full">
     <div class="form-editor-side-title text-center text-primary mb-2">编辑</div>
     <textarea value="" class="editor w-100 flex-grow-1" ref="editor" placeholder="支持markdown格式，请输入友善内容哦，长度在10000字以内" maxlength="10000" @input="onEdit">
     </textarea>

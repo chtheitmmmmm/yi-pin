@@ -1,18 +1,7 @@
-import {
-  Column,
-  Entity,
-  PrimaryColumn,
-  PrimaryGeneratedColumn,
-  Unique,
-} from 'typeorm';
+import { Column, Entity, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 import * as fs from 'fs';
 import { v1, v4 } from 'uuid';
 import * as path from 'path';
-
-export interface UserRegisterInfo {
-  account: User['account'];
-  password: User['password'];
-}
 
 @Entity()
 export class User {
@@ -32,7 +21,7 @@ export class User {
 
   @Column('blob')
   profile: Buffer = fs.readFileSync(
-    path.resolve(__dirname, '../../assets/user-default-profile.png'),
+    path.resolve(__dirname, '../../../assets/user-default-profile.png'),
   );
 
   @Column('timestamp')
@@ -40,11 +29,4 @@ export class User {
 
   @Column('tinyint')
   type = 127; // user type
-
-  constructor(userRegisterInfo?: UserRegisterInfo) {
-    if (userRegisterInfo !== undefined) {
-      this.account = userRegisterInfo.account;
-      this.password = userRegisterInfo.password;
-    }
-  }
 }

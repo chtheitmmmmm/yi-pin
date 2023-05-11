@@ -2,7 +2,7 @@
 </script>
 
 <template>
-    <div class="self d-lg-flex flex-lg-row align-items-center">
+    <div class="self flex flex-col flex-lg-row align-items-center">
         <img src='../../assets/logo.jpg' alt="公司Logo" class="m-1"/>
         <div class="logo-name m-1">奕品教育</div>
     </div>

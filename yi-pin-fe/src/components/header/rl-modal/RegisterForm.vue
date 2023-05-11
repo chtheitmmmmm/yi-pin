@@ -2,13 +2,11 @@
 
 import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
 import {inject, reactive, ref} from 'vue';
-import { registerInputValidator } from '@/components/header/rl-modal/joiLrExtension';
 import axios from 'axios';
-import type { RawUser } from '@/entities/user';
-import type {Session} from "@/entities/session";
+import type { Session } from "@/entities/session";
 
 const emits = defineEmits<{
-  (e: "logined", user: RawUser): void
+  (e: "close"): void
 }>()
 
 const registerInput = reactive({
@@ -22,17 +20,12 @@ const registerError = reactive({
   errMessage: ''
 })
 
-const session = inject<Session>('session')
+const session = inject<Session>('session')!
 
 const registering = ref(false)
 
 function onRegister() {
-  const result = registerInputValidator.validate(registerInput)
-  // registering.value = true
-  if (result.error) {
-    registerError.hasError = true
-    registerError.errMessage = result.error!.details[0].message;
-  } else if (registerInput.password !== registerInput.confirmPassword) {
+  if (registerInput.password !== registerInput.confirmPassword) {
     registerError.hasError = true
     registerError.errMessage = "密码前后不一致"
   } else {
@@ -42,11 +35,18 @@ function onRegister() {
     })
       .then(value => {
         registerError.hasError = false;
-        emits('logined', value.data)
+        session.login(value.data.data);
+        emits('close')
       })
       .catch(reason => {
         registerError.hasError = true
-        registerError.errMessage = reason.response.data.message;
+        if (reason.response.data.statusCode) {
+           registerError.errMessage = reason.response.data.message[0];
+        } else if (reason.response.data.errCode) {
+           registerError.errMessage = reason.response.data.errMsg;
+        } else {
+          registerError.errMessage = '注册失败'
+        }
       })
       // @ts-ignore
       .finally(() => {

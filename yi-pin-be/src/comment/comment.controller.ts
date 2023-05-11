@@ -1,30 +1,40 @@
-import {Controller, Get, Post, Body, Param, Delete, Headers, Query, BadRequestException} from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Headers,
+  Query,
+  BadRequestException,
+} from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
-import { UserUnauthorizedException } from '../exception/user-unauthorized.exception';
+import { ServiceResult, WrapResult } from '../exception/exception';
 
 @Controller('/api/comment')
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
   @Post('public')
+  @WrapResult
   async create(
     @Body() createCommentDto: CreateCommentDto,
-    @Headers('Authorization') uid: string,
+    @Headers('Authorization') uid: string | undefined,
   ) {
-    if (uid) {
-      return this.commentService.create(createCommentDto, uid);
+    if (uid !== undefined) {
+      return await this.commentService.create(createCommentDto, uid);
     } else {
-      throw new UserUnauthorizedException();
+      throw ServiceResult.userUnauthorized();
     }
   }
 
   @Get('/forum/num')
-  async getForumCommentNum(@Query('fid') fid) {
-    if (fid) {
+  @WrapResult
+  async getForumCommentNum(@Query('fid') fid: string | undefined) {
+    if (fid !== undefined) {
       return await this.commentService.getForumCommentNum(fid);
     } else {
-      throw new BadRequestException('请求参数没有带上帖子 id');
+      throw ServiceResult.forumDontExists();
     }
   }
 }

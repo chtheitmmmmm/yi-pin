@@ -20,7 +20,7 @@ function onLogout() {
 <template>
 <Popover class='dropdown container position-relative border-5 rounded-3 bg-info bg-opacity-10'>
   <PopoverButton>
-    <div style='display: inline-block'>
+    <div class="flex flex-col align-items-center">
       <img :src='userData.profile' alt='用户头像' />
       <div>
         <small>{{userData.account}}</small>

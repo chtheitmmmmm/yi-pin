@@ -1,45 +1,53 @@
-import {Controller, Get, Post, Body, Headers, Query, BadRequestException} from '@nestjs/common';
+import { Controller, Get, Post, Body, Headers, Query } from '@nestjs/common';
 import { ForumService } from './forum.service';
 import { CreateForumDto } from './dto/create-forum.dto';
-import { DbService } from '../db/db.service';
-import { UserUnauthorizedException } from '../exception/user-unauthorized.exception';
+import { ServiceResult, WrapResult } from '../exception/exception';
 
 @Controller('/api/forum')
 export class ForumController {
-  constructor(
-    private readonly forumService: ForumService,
-    private readonly dbService: DbService,
-  ) {}
+  constructor(private readonly forumService: ForumService) {}
 
   @Post('public')
+  @WrapResult
   async create(
     @Body() createForumDto: CreateForumDto,
-    @Headers('Authorization') uid: string,
+    @Headers('Authorization') uid: string | undefined,
   ) {
-    if (uid && (await this.dbService.hasUser(uid))) {
+    if (uid !== undefined) {
       return await this.forumService.create(createForumDto, uid);
     } else {
       // 用户没有 authorization
-      throw new UserUnauthorizedException();
+      throw ServiceResult.userUnauthorized();
     }
   }
 
   @Get('list/forum')
-  async findAllForumForum() {
-    return await this.dbService.findAllForumForum();
+  @WrapResult
+  async findAllForumForum(@Query('uid') uid: string | undefined) {
+    if (uid !== undefined) {
+      return await this.forumService.findAllForumForum(uid);
+    } else {
+      return await this.forumService.findAllForumForumNoAuth();
+    }
   }
 
   @Get('list/consult')
-  async findAllConsultForum() {
-    return await this.dbService.findAllConsultForum();
+  @WrapResult
+  async findAllConsultForum(@Query('uid') uid: string | undefined) {
+    if (uid !== undefined) {
+      return await this.forumService.findAllConsultForum(uid);
+    } else {
+      return await this.forumService.findAllConsultForumNoAuth();
+    }
   }
 
   @Get('item')
-  async findOneForum(@Query('fid') fid: string) {
-    if (fid) {
-      return await this.dbService.findOneForum(fid);
+  @WrapResult
+  async findOneForum(@Query('fid') fid: string | undefined) {
+    if (fid !== undefined) {
+      return await this.forumService.findOneForum(fid);
     } else {
-      throw new BadRequestException('需要制定帖子的ID');
+      throw ServiceResult.forumDontExists();
     }
   }
 }

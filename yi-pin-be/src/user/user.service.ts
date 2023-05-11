@@ -1,41 +1,28 @@
 import { Injectable } from '@nestjs/common';
-import uuid from 'uuid';
-import { User } from './user';
 import { DbService } from '../db/db.service';
-
-interface LoginMsg {
-  code: number;
-  msg: string;
-}
-
-// 登录成功
-const LoginOk: LoginMsg = {
-  code: 0,
-  msg: 'ok',
-};
-
-const LoginInvalidUUID: LoginMsg = {
-  code: 1,
-  msg: 'UUID invalid',
-};
+import { CreateUserDto } from './dto/create-user.dto';
+import { User } from './entities/user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(private readonly db: DbService) {}
+  constructor(private readonly dbService: DbService) {}
 
-  async register(user: User) {
-    await this.db.userRegister(user);
+  async register(createUserDto: CreateUserDto) {
+    const user = new User();
+    user.account = createUserDto.account;
+    user.password = createUserDto.password;
+    return await this.dbService.userRegister(user);
   }
 
   async login(account: string, password: string) {
-    return await this.db.userLogin(account, password);
+    return await this.dbService.userLogin(account, password);
   }
 
   async autoLogin(cookie: string) {
-    return await this.db.userAutoLogin(cookie);
+    return await this.dbService.userAutoLogin(cookie);
   }
 
   async safeProfile(uid: string) {
-    return await this.db.userSafeProfile(uid);
+    return await this.dbService.userSafeProfile(uid);
   }
 }

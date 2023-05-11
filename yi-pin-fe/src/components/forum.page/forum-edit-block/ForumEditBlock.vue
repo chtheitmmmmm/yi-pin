@@ -30,12 +30,10 @@ function onSubmit() {
       Authorization: session.user!.uid
     }
   }).then(value => {
-    console.log(value)
     formData.content = ""
     formData.title = ""
     emits('public')
   }).catch(err => {
-    console.log(err)
     if (err.response.status === 400) {
       errMessages = err.response.data.message!;
     }
@@ -49,14 +47,14 @@ function onSubmit() {
 </script>
 
 <template>
-<form @submit.prevent="onSubmit">
+<form @submit.prevent="onSubmit" class="flex flex-col">
   <div class="text-center">
     <div class="w-1/2 flex align-items-center h-20">
       <label for="forum-title" class="text-gray-700 font-medium h3">标题：</label>
       <input v-model="formData.title" type="text" id="forum-title" name="forum-title" class="border border-gray-300 rounded py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" placeholder="帖子标题">
     </div>
   </div>
-  <ForumEditor v-model="formData.content" class="shadow" ref="forumEditor"></ForumEditor>
+  <ForumEditor v-model="formData.content" class="shadow flex-grow-1" ref="forumEditor" ></ForumEditor>
   <div class="forum-type flex align-items-center">
     <div class="p-3">发布类型</div>
     <div class="btn-group" role="group" aria-label="Basic radio toggle button group">

@@ -7,25 +7,22 @@ import {
   Query,
   Res,
 } from '@nestjs/common';
-import { User, UserRegisterInfo } from './user';
 import { UserService } from './user.service';
 import { Response } from 'express';
-import { userRegisterPipe } from './user.dto';
 import * as cookieParser from 'cookie';
+import { Result, ServiceResult, WrapResult } from '../exception/exception';
+import { CreateUserDto } from './dto/create-user.dto';
 
 @Controller('api/user')
 export class UserController {
-  constructor(private readonly service: UserService) {}
+  constructor(private readonly userService: UserService) {}
 
   @Post('register')
-  async register(
-    @Body(userRegisterPipe) userRegisterInfo: UserRegisterInfo,
-    @Res() res: Response,
-  ) {
-    const user = new User(userRegisterInfo);
-    await this.service.register(user); // 注册用户
+  @WrapResult
+  async register(@Body() createUserDto: CreateUserDto, @Res() res: Response) {
+    const user = (await this.userService.register(createUserDto)).data; // 注册用户
     res.setHeader('Set-Cookie', `uid=${user.uid}; path=/`); // 发送凭证
-    res.send(user);
+    res.send(Result.withAuto(ServiceResult.ok(user)));
   }
 
   /**
@@ -41,14 +38,15 @@ export class UserController {
    *  - 当账号、密码不匹配
    */
   @Get('login')
+  @WrapResult
   async login(
     @Query('account') account,
     @Query('password') password,
     @Res() res: Response,
   ) {
-    const user = await this.service.login(account, password);
+    const user = (await this.userService.login(account, password)).data;
     res.setHeader('Set-Cookie', `uid=${user.uid}; path=/`);
-    res.send(user);
+    res.send(Result.withAuto(ServiceResult.ok(user)));
   }
 
   /**
@@ -60,25 +58,14 @@ export class UserController {
    * - 当cookie无法对应用户数据抛出异常
    */
   @Get('autologin')
+  @WrapResult
   async autoLogin(@Headers('Cookie') cookieString: string | undefined) {
     if (cookieString) {
       const cookie = cookieParser.parse(cookieString) as { uid?: string };
       if (cookie.uid) {
-        try {
-          return await this.service.autoLogin(cookie.uid);
-        } catch (e) {
-          throw {
-            statusCode: 404,
-            message: e,
-            code: 2,
-          };
-        }
+        return await this.userService.autoLogin(cookie.uid);
       } else {
-        throw {
-          statusCode: 401,
-          message: '没有有效 cookie',
-          code: 1,
-        };
+        throw ServiceResult.userDontExists();
       }
     }
   }
@@ -87,17 +74,12 @@ export class UserController {
    * @param uid {string} 用户uid
    */
   @Get('safe-profile')
-  async safeProfile(@Query('uid') uid: string) {
-    if (uid) {
-      try {
-        return await this.service.safeProfile(uid);
-      } catch (e) {
-        return {
-          statusCode: 404,
-          message: e,
-          code: 2,
-        };
-      }
+  @WrapResult
+  async safeProfile(@Query('uid') uid: string | undefined) {
+    if (uid !== undefined) {
+      return await this.userService.safeProfile(uid);
+    } else {
+      throw ServiceResult.userDontExists();
     }
   }
 }
