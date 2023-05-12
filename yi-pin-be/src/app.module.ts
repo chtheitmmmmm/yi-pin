@@ -6,6 +6,7 @@ import { CommentModule } from './comment/comment.module';
 import { CollectionModule } from './collection/collection.module';
 import { ForumModule } from './forum/forum.module';
 import { LikeModule } from './like/like.module';
+import { CommentLikeModule } from './comment-like/comment-like.module';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { LikeModule } from './like/like.module';
     CommentModule,
     CollectionModule,
     LikeModule,
+    CommentLikeModule,
   ],
   controllers: [AppController],
   providers: [AppService],

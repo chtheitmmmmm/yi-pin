@@ -8,7 +8,6 @@ import PublicSuccessModal from "@/components/forum.page/PublicSuccessModal.vue";
 import BackBrowseButton from "@/components/forum.page/BackBrowseButton.vue";
 
 const session = inject<Session>("session")!
-
 const ifEditing = ref(false)
 const modal = ref<typeof PublicSuccessModal | null>(null)
 
@@ -37,8 +36,7 @@ function onPublic() {
     </div>
   </div>
 </div>
-
-</template>Ï
+</template>
 
 <style scoped lang="scss">
 

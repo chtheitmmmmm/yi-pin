@@ -1,35 +1,22 @@
 <script setup lang="ts">
-
-import LikeIcon from "@/components/forum.page/forums-view-block/post-list-side/post-list/icon/LikeIcon.vue";
-import CommentIcon from "@/components/forum.page/forums-view-block/post-list-side/post-list/icon/CommentIcon.vue";
-import CollectionIcon from "@/components/forum.page/forums-view-block/post-list-side/post-list/icon/CollectionIcon.vue";
 import type {Dayjs} from "dayjs";
+import LCCIcons from "@/components/forum.page/forums-view-block/post-list-side/icon/LCCIcons.vue";
+import type { ForumCollection, ForumLike } from "@/entities/forum";
 
 const emits = defineEmits<{
   (e: 'view', fid: string): void
 }>()
 
 interface ForumProfile {
+  fid: string
   title: string,
   createTime: Dayjs,
-  like: number,
-  collection: number,
-  comment: number,
-  fid: string
+  like: ForumLike,
+  collection: ForumCollection,
+  commentNum: number,
 }
 
-const props = defineProps<ForumProfile>()
-
-const icons = [{
-  icon: LikeIcon,
-  data: props.like
-}, {
-  icon: CommentIcon,
-  data: props.comment
-}, {
-  icon: CollectionIcon,
-  data: props.collection
-}]
+defineProps<ForumProfile>()
 
 
 </script>
@@ -45,10 +32,12 @@ const icons = [{
     </div>
 
     <div class="flex align-self-end w-1/2 justify-content-end">
-      <div v-for="icon of icons" class="flex w-10 icon" >
-        <component :is="icon.icon as any" ></component>
-        <span class="cursor-default">{{icon.data}}</span>
-      </div>
+      <LCCIcons :like="like.num"
+                :comment="commentNum"
+                :if-like="like.ifLiked ?? false"
+                :if-collected="collection.ifCollected ?? false"
+                :collection="collection.num"
+      ></LCCIcons>
     </div>
   </div>
 </div>

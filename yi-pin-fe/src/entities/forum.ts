@@ -1,23 +1,107 @@
-export interface Forum {
-    /**
-     * 发起者的uid
-     */
-    author: string;
-    /**
-     *
-     * 内容URL，为内容本身为一个独立的HTML页面，用户发帖的时候编写markdown，返回服务器的时候会马上编译为HTML保存到服务器文件系统中，然后数据库中保存该文档的路径，在此返回。前端会放在iframe中渲染
-     */
-    "content": string;
-    /**
-     * 创建时间，帖子创建的时间
-     */
-    "create-time": string;
-    /**
-     * 主键
-     */
-    id: string;
-    /**
-     * 标题，大号标题显示
-     */
-    title: string;
+import type {Dayjs} from "dayjs";
+import type {Profile, UserProfile, UserProfileDto} from "@/entities/user";
+import {profileToURL} from "@/entities/user";
+import dayjs from "dayjs";
+import {marked} from "marked";
+
+export interface ForumLike {
+  id?: string,
+  ifLiked?: boolean,
+  num: number,
+}
+
+export interface ForumCollection {
+    id?: string,
+    ifCollected?: boolean,
+    num: number,
+  }
+
+// Get /api/forum 响应体
+export interface ForumProfileDto {
+  id: string,
+  title: string,
+  createTime: string,
+  like: ForumLike,
+  collection: ForumCollection,
+  commentNum: number,
+}
+
+export interface ForumProfile {
+  id: string,
+  title: string,
+  createTime: Dayjs,
+  like: ForumLike,
+  collection: ForumCollection,
+  commentNum: number,
+}
+
+// Get /api/forum/:id 响应体
+export interface ForumDetailDto {
+  id: string, // 帖子的 id
+  content: string // 帖子的 内容
+  title: string, // 帖子的 标题
+  createTime: string, // 发布时间
+  type: 0 | 1, // 类型
+  author: { // 作者
+    uid: string, // 作者 id
+    nickname: string, // 作者昵称
+    account: string, // 作者账号
+    profile: Profile, // 作者头像
+    type: number, // 作者用户类型
+  },
+  like: ForumLike,
+  collection: ForumCollection,
+  comments: {
+    id: string, // 评论的 id
+    content: string, // 评论的内容
+    time: string, // 评论的时间
+    author: UserProfileDto,
+    like: {
+      id?: string,
+      ifLiked?: boolean,
+      num: number,
+    }
+  }[],
+}
+
+export interface ForumDetail {
+  id: string, // 帖子的 id
+  content: string // 帖子的 内容
+  title: string, // 帖子的 标题
+  createTime: Dayjs, // 发布时间
+  type: 0 | 1, // 类型
+  author: { // 作者
+    uid: string, // 作者 id
+    nickname: string, // 作者昵称
+    account: string, // 作者账号
+    profile: string, // 作者头像
+    type: number, // 作者用户类型
+  },
+  like: ForumLike,
+  collection: ForumCollection,
+  comments: {
+    id: string, // 评论的 id
+    content: string, // 评论的内容
+    time: Dayjs, // 评论的时间
+    author: UserProfile,
+    like: {
+      id?: string,
+      ifLiked?: boolean,
+      num: number,
+    }
+  }[],
+}
+
+export function forumDetailTransform(dto: ForumDetailDto): ForumDetail {
+  const detail: any = {
+    ...dto
+  } as any
+  detail.createTime = dayjs(dto.createTime) as any
+  detail.author.profile = profileToURL(dto.author.profile) as any
+  detail.comments.forEach((c: any) => {
+    c.time = dayjs(c.time) as any
+    c.author.profile = profileToURL(c.author.profile) as any
+  })
+  detail.content = marked.parse(dto.content)
+  return detail
 }

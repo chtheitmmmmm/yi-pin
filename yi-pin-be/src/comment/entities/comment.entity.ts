@@ -22,10 +22,6 @@ export interface CommentInter {
    */
   id: string;
   /**
-   * 评论的赞数
-   */
-  like: number;
-  /**
    * 评论的时间
    */
   time: Date;
@@ -44,9 +40,6 @@ export class Comment implements CommentInter {
 
   @Column('tinytext')
   content: string;
-
-  @Column('integer')
-  like = 0;
 
   @Column('timestamp')
   time: Date = new Date();

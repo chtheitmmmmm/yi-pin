@@ -21,21 +21,23 @@ const formData = reactive({
 
 const forumEditor = ref<typeof ForumEditor | null>(null)
 
-let errMessages = reactive([])
+let errMessages = reactive<string[]>([])
 
 function onSubmit() {
   submitting.value = true
-  axios.post("forum/public", formData, {
+  axios.post("forum", formData, {
     headers: {
-      Authorization: session.user!.uid
+      Authorization: session.user?.uid
     }
-  }).then(value => {
+  }).then(_ => {
     formData.content = ""
     formData.title = ""
     emits('public')
   }).catch(err => {
-    if (err.response.status === 400) {
+    if (err.response.data.message !== undefined) {
       errMessages = err.response.data.message!;
+    } else {
+      errMessages = [err.response.data.errMsg];
     }
   })
   //@ts-ignore

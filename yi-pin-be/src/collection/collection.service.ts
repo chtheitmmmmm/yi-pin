@@ -10,10 +10,24 @@ export class CollectionService {
 
   async create(createCollectionDto: CreateCollectionDto, uid: string) {
     if ((await this.dbService.hasUser(uid)).data) {
-      const newCollection = new Collection();
-      newCollection.uid = uid;
-      newCollection.fid = createCollectionDto.fid;
-      return await this.dbService.createCollection(newCollection);
+      if ((await this.dbService.hasForum(createCollectionDto.fid)).data) {
+        if (
+          (
+            await this.dbService.ifUserCollectForum(
+              uid,
+              createCollectionDto.fid,
+            )
+          ).data
+        ) {
+          throw ServiceResult.userHasCollected();
+        }
+        const newCollection = new Collection();
+        newCollection.uid = uid;
+        newCollection.fid = createCollectionDto.fid;
+        return await this.dbService.createCollection(newCollection);
+      } else {
+        throw ServiceResult.forumDontExists();
+      }
     } else {
       throw ServiceResult.userDontExists();
     }
@@ -33,9 +47,24 @@ export class CollectionService {
    */
   async findAllForumCollectionNum(fid: string) {
     if ((await this.dbService.hasForum(fid)).data) {
-      return await this.dbService.findAllForumCollectionNum(fid);
+      return await this.dbService.getAllForumCollectionNum(fid);
     } else {
       throw ServiceResult.forumDontExists();
+    }
+  }
+
+  /**
+   * 取消收藏
+   */
+  async removeCollection(cid: string, uid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      if ((await this.dbService.hasCollection(cid)).data) {
+        return await this.dbService.removeCollection(cid);
+      } else {
+        throw ServiceResult.collectionDontExists();
+      }
+    } else {
+      throw ServiceResult.userDontExists();
     }
   }
 }

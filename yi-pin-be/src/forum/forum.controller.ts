@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Headers, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Headers,
+  Query,
+  ParseIntPipe,
+  Param,
+} from '@nestjs/common';
 import { ForumService } from './forum.service';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { ServiceResult, WrapResult } from '../exception/exception';
@@ -7,7 +16,7 @@ import { ServiceResult, WrapResult } from '../exception/exception';
 export class ForumController {
   constructor(private readonly forumService: ForumService) {}
 
-  @Post('public')
+  @Post()
   @WrapResult
   async create(
     @Body() createForumDto: CreateForumDto,
@@ -16,38 +25,29 @@ export class ForumController {
     if (uid !== undefined) {
       return await this.forumService.create(createForumDto, uid);
     } else {
-      // 用户没有 authorization
       throw ServiceResult.userUnauthorized();
     }
   }
 
-  @Get('list/forum')
+  @Get()
   @WrapResult
-  async findAllForumForum(@Query('uid') uid: string | undefined) {
-    if (uid !== undefined) {
-      return await this.forumService.findAllForumForum(uid);
+  async findAllForumForum(
+    @Query('type', ParseIntPipe) type: number | undefined,
+    @Query('uid') uid: string | undefined,
+  ) {
+    if (type !== 0 && type !== 1) {
+      throw ServiceResult.forumTypeNotValid();
     } else {
-      return await this.forumService.findAllForumForumNoAuth();
+      return await this.forumService.findAllForums(type, uid);
     }
   }
 
-  @Get('list/consult')
+  @Get(':id')
   @WrapResult
-  async findAllConsultForum(@Query('uid') uid: string | undefined) {
-    if (uid !== undefined) {
-      return await this.forumService.findAllConsultForum(uid);
-    } else {
-      return await this.forumService.findAllConsultForumNoAuth();
-    }
-  }
-
-  @Get('item')
-  @WrapResult
-  async findOneForum(@Query('fid') fid: string | undefined) {
-    if (fid !== undefined) {
-      return await this.forumService.findOneForum(fid);
-    } else {
-      throw ServiceResult.forumDontExists();
-    }
+  async findOneForum(
+    @Param('id') fid: string,
+    @Query('uid') uid: string | undefined,
+  ) {
+    return await this.forumService.findOneForum(fid, uid);
   }
 }

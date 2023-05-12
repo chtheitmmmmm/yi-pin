@@ -11,6 +11,8 @@ import { marked } from "marked";
 import { mangle } from "marked-mangle"
 // @ts-ignore
 import { gfmHeadingId } from "marked-gfm-heading-id";
+import ElementPlus from 'element-plus'
+import "element-plus/dist/index.css";
 
 marked.use(mangle())
 marked.use(gfmHeadingId({
@@ -21,6 +23,7 @@ axios.defaults.baseURL = `${location.origin}/api`
 
 const app = createApp(App)
 app.use(router)
+app.use(ElementPlus)
 app.provide("session", session)
 app.mount("#app")
 

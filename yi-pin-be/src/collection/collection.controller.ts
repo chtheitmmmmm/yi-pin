@@ -1,4 +1,13 @@
-import { Controller, Get, Post, Body, Headers, Query } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Post,
+  Body,
+  Headers,
+  Query,
+  Delete,
+  Param,
+} from '@nestjs/common';
 import { CollectionService } from './collection.service';
 import { CreateCollectionDto } from './dto/create-collection.dto';
 import { ServiceResult, WrapResult } from '../exception/exception';
@@ -43,6 +52,22 @@ export class CollectionController {
       return await this.collectionService.findAllForumCollectionNum(fid);
     } else {
       throw ServiceResult.forumDontExists();
+    }
+  }
+
+  /**
+   * 取消收藏
+   */
+  @Delete(':id')
+  @WrapResult
+  async cancel(
+    @Param('id') cid: string | undefined,
+    @Headers('Authorization') uid: string | undefined
+  ) {
+    if (uid !== undefined) {
+      return this.collectionService.removeCollection(cid, uid);
+    } else {
+      throw ServiceResult.userUnauthorized();
     }
   }
 }

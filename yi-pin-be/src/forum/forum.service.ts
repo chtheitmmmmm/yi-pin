@@ -1,7 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { CreateForumDto } from './dto/create-forum.dto';
 import { DbService } from '../db/db.service';
-import { Forum } from './entities/forum.entity';
+import { Forum, ForumInter } from './entities/forum.entity';
+import { ServiceResult } from '../exception/exception';
 
 @Injectable()
 export class ForumService {
@@ -16,23 +17,15 @@ export class ForumService {
     return await this.dbService.createForum(newForum);
   }
 
-  async findAllForumForum(uid: string) {
-    return await this.dbService.findAllForumForum(uid);
+  async findAllForums(type: ForumInter['type'], uid: string) {
+    return await this.dbService.findAllForums(type, uid);
   }
 
-  async findAllConsultForum(uid: string) {
-    return await this.dbService.findAllConsultForum(uid);
-  }
-
-  async findAllForumForumNoAuth() {
-    return await this.dbService.findAllForumForumNoAuth();
-  }
-
-  async findAllConsultForumNoAuth() {
-    return await this.dbService.findAllConsultForumNoAuth();
-  }
-
-  async findOneForum(fid: string) {
-    return await this.dbService.findOneForum(fid);
+  async findOneForum(fid: string, uid?: string) {
+    if ((await this.dbService.hasForum(fid)).data) {
+      return await this.dbService.findOneForum(fid, uid);
+    } else {
+      throw ServiceResult.forumDontExists();
+    }
   }
 }

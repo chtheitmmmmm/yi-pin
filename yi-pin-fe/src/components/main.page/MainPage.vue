@@ -77,7 +77,7 @@ onMounted(() => {
     </nav>
   </div>
   <div class="areas-body">
-    <Body :areas='areas' data-bs-spy="scroll" data-bs-smooth-scroll="true" data-bs-target="nav-of-areas" tabindex="0"/>
+    <Body :has-banner="true" :areas='areas' data-bs-spy="scroll" data-bs-smooth-scroll="true" data-bs-target="nav-of-areas" tabindex="0"/>
   </div>
 </div>
 </template>

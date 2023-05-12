@@ -66,6 +66,18 @@ export class ServiceResult {
   static userPasswordWrong() {
     return new ServiceResult(12, '密码错误');
   }
+
+  static userHasLike() {
+    return new ServiceResult(13, '用户已点赞');
+  }
+
+  static userHasCollected() {
+    return new ServiceResult(14, '用户已收藏');
+  }
+
+  static forumTypeNotValid() {
+    return new ServiceResult(15, '要获取的帖子 type 参数不正确');
+  }
 }
 
 // 所有的 controller 应该返回这种格式的结构
@@ -87,9 +99,13 @@ export class Result extends ServiceResult {
       case 9:
       case 10:
       case 11:
+      case 13:
+      case 14:
         return new HttpException(sr, 409); // 要插入的资源已存在
       case 12:
         return new HttpException(sr, 403); // 用户密码错误
+      case 15:
+        return new HttpException(sr, 400); // 错误的请求格式
       default:
         return new HttpException(sr, 500); // 其他错误（不会触发）
     }
