@@ -71,7 +71,7 @@ onMounted(() => {
 <div class="main-ctn">
   <div class="areas-index">
     <nav id="nav-of-areas" class="list-group" style="position: relative">
-      <a v-for="area of areas" class="list-group-item list-group-item-action text-center" :href="`#${area.link}`" ref="anchors">
+      <a v-for="area of areas" :key="area.link" class="list-group-item list-group-item-action text-center" :href="`#${area.link}`" ref="anchors">
           {{area.phrase}}
       </a>
     </nav>

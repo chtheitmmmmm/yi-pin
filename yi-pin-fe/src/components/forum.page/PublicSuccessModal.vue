@@ -1,6 +1,6 @@
 <script setup lang="ts">
 
-import {ref, defineProps, defineEmits, reactive, onMounted, watch} from 'vue'
+import {ref, reactive, onMounted} from 'vue'
 import {Modal} from "bootstrap";
 
 const modalElem = ref<HTMLDivElement | null>(null)

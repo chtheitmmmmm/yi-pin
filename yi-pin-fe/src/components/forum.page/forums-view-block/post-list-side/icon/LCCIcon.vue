@@ -36,30 +36,33 @@ const paths = {
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/app";
+@use "@/assets/app" as *;
 
 .icon {
-    width: 2em;
-    > *:nth-child(1) {
-      $size: 1.5em;
-      height: $size;
-      width: $size;
-      @keyframes bounce {
-        /* 弹跳动画 */
-        0% { padding-bottom: 0; }
-        20% { padding-bottom: 10px; }
-        40% { padding-bottom: 0; }
-        60% { padding-bottom: 5px; }
-        80% { padding-bottom: -1px; }
-        100% { padding-bottom: 0; }
-      }
-      &:hover {
-        animation: bounce 0.5s;
-        + span {
-          color: $primary;
-        }
+  width: 2em;
+  > *:nth-child(1) {
+    $size: 1.5em;
+    height: $size;
+    width: $size;
+    @keyframes bounce {
+      /* 弹跳动画 */
+      0% { padding-bottom: 0; }
+      20% { padding-bottom: 10px; }
+      40% { padding-bottom: 0; }
+      60% { padding-bottom: 5px; }
+      80% { padding-bottom: -1px; }
+      100% { padding-bottom: 0; }
+    }
+    &:hover {
+      animation: bounce 0.5s;
+      + span {
+        color: $primary;
       }
     }
-
   }
+
+}
+*::selection {
+  all: unset;
+}
 </style>

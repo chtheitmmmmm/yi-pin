@@ -5,15 +5,16 @@ import LCCIcons from "@/components/forum.page/forums-view-block/post-list-side/i
 import axios from "axios";
 import type {Session} from "@/entities/session";
 import type {ForumDetail} from "@/entities/forum";
+import type {InteractType} from "@/components/forum.page/forums-view-block/post-list-side/PostListSide.vue";
 
 const forum = inject<ForumDetail>('forum')!;
 const session = inject<Session>('session')!;
 
 const emits = defineEmits<{
-  (e: 'interact', type: 'like' | 'collect' | 'comment', ifDo: true | false): void
+  (e: 'interact', type: InteractType, ifDo: true | false): void
 }>()
 
-function onInteract(type: 'like' | 'collection' | 'comment') {
+function onInteract(type: InteractType) {
   switch (type) {
     case "like":
       if (forum.like.ifLiked === false) {
@@ -56,7 +57,7 @@ function onInteract(type: 'like' | 'collection' | 'comment') {
           forum.collection.ifCollected = true;
           forum.collection.num++;
           forum.collection.id = value.data.data.id;
-          emits('interact', 'collect', true);
+          emits('interact', 'collection', true);
         }).catch(err => {
           console.log(err)
         })
@@ -69,11 +70,12 @@ function onInteract(type: 'like' | 'collection' | 'comment') {
           forum.collection.ifCollected = false;
           forum.collection.num--;
           delete forum.collection.id;
-          emits('interact', 'collect', false);
+          emits('interact', 'collection', false);
         })
       }
       break;
     case "comment":
+      emits('interact', 'comment', false);
       break;
   }
 }

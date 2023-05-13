@@ -57,7 +57,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/app";
+@use "@/assets/app" as *;
 
 .form-editor {
   height: 100%;

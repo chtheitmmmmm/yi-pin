@@ -8,7 +8,7 @@ import type {Session} from "@/entities/session";
 import type {ForumProfile, ForumProfileDto} from "@/entities/forum";
 
 const emits = defineEmits<{
-  (e: 'view', fid: string): void
+  'view': [fid: string]
 }>()
 
 function onView(fid: string) {

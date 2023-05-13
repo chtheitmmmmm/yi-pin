@@ -72,7 +72,7 @@ const departs = [{
         <li class="m-3">
           <h2>二、主要部门</h2>
           <ul class="list-group">
-            <li v-for="depart of departs" class="list-group-item">
+            <li v-for="depart of departs" class="list-group-item" :key="depart.name">
               <h3 class="h3 text-info ">
                 <span>{{depart.name}}</span>
               </h3>
@@ -98,7 +98,7 @@ const departs = [{
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/app";
+@use "@/assets/app" as *;
 
 .ctn {
   width: 90%;

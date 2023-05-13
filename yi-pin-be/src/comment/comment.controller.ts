@@ -1,12 +1,4 @@
-import {
-  Controller,
-  Get,
-  Post,
-  Body,
-  Headers,
-  Query,
-  BadRequestException,
-} from '@nestjs/common';
+import { Controller, Get, Post, Body, Headers, Query } from '@nestjs/common';
 import { CommentService } from './comment.service';
 import { CreateCommentDto } from './dto/create-comment.dto';
 import { ServiceResult, WrapResult } from '../exception/exception';
@@ -15,7 +7,7 @@ import { ServiceResult, WrapResult } from '../exception/exception';
 export class CommentController {
   constructor(private readonly commentService: CommentService) {}
 
-  @Post('public')
+  @Post()
   @WrapResult
   async create(
     @Body() createCommentDto: CreateCommentDto,

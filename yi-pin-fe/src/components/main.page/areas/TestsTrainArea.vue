@@ -12,7 +12,7 @@ const trains = [{
 
 <template>
 <div class="card-group">
-  <div v-for="t of trains" class="card">
+  <div v-for="t of trains" :key="t.name" class="card">
     <div class="btn btn-outline-primary card-header text-center ">
       {{t.name}}
     </div>

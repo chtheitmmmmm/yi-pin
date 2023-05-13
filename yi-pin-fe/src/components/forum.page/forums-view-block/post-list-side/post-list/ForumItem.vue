@@ -44,7 +44,7 @@ defineProps<ForumProfile>()
 </template>
 
 <style scoped lang="scss">
-@import "@/assets/app";
+@use "@/assets/app" as *;
 
 .forum-item {
   height: 5em;

@@ -14,7 +14,7 @@ const trains = [{
 <template>
 <table class='container table-primary table-hover'>
   <tbody class='card-group'>
-    <tr v-for='t of trains' class='container bg-opacity-10 card'>
+    <tr v-for='t of trains' class='container bg-opacity-10 card' :key="t.tt">
         <td class='card-header'>
           <img :src='`/trains/${t.tt}.jpg`' :alt='t.tt'>
         </td>

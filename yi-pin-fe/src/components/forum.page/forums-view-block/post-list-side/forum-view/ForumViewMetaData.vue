@@ -15,7 +15,7 @@ const forum = inject<ForumDetail>('forum')!
     <div class="flex-grow">{{forum.author.account}}</div>
   </div>
   <div>
-    {{forum.createTime.format('YYYY-MM-DD')}}
+    {{forum.createTime.format('YYYY-MM-DD HH:mm:ss')}}
   </div>
 </div>
 </template>

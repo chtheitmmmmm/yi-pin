@@ -15,7 +15,7 @@ const businesses = [{
 <template>
 <table class='container table-primary table-hover'>
   <tbody class='card-group'>
-    <tr v-for='bus of businesses' class='container bg-opacity-10 card'>
+    <tr v-for='bus of businesses' :key="bus.tt" class='container bg-opacity-10 card'>
         <td class='card-header'>
           <img :src='`/praexp/${bus.tt}.jpg`' :alt='bus.tt'>
         </td>

@@ -16,3 +16,20 @@ body {
     scroll-behavior: smooth;
   }
 }
+
+// 隐藏 scroll bar
+@layer scrollbar-hidden {
+  ::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+// 取消选中伪元素的状态
+@layer non-selection {
+  ::selection {
+    all: unset;
+  }
+}
+.non-selection {
+  cursor: default;
+}

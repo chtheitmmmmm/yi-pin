@@ -14,7 +14,7 @@ function onRl(ifRegister: boolean) {
 </template>
 
 <style scoped lang='scss'>
-@use "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/bootstrap" as *;
 .ctn {
   background: transparent;
   button {
@@ -28,7 +28,7 @@ function onRl(ifRegister: boolean) {
   transition: 0.2s;
   &:hover {
     font-size: 1.4em;
-    color: #338e17;
+    color: $primary;
   }
   cursor: pointer;
 }

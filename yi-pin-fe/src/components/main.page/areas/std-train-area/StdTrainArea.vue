@@ -13,7 +13,7 @@ const links = [{
 
 <template>
 <div class="d-lg-flex bubble-outer-ctn justify-content-center align-items-center">
-  <div v-for="link of links" class="d-flex flex-grow-1 justify-content-center">
+  <div v-for="link of links" :key="link.name" class="d-flex flex-grow-1 justify-content-center">
     <TrainItemBubble class="text-center d-flex align-items-center justify-content-center">
         <div class="w-50">
            {{link.name}}

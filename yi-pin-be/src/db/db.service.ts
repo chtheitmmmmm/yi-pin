@@ -210,7 +210,7 @@ export class DbService {
       collection: {
         num: (await this.getAllForumCollectionNum(fid)).data,
       },
-      comments: (await this.getForumComments(fid)).data,
+      comments: (await this.getForumComments(fid, uid)).data,
     };
     if (uid !== undefined) {
       if (
@@ -228,7 +228,7 @@ export class DbService {
         ).data;
       }
     }
-    return ServiceResult.ok(forumData)
+    return ServiceResult.ok(forumData);
   }
 
   /**
@@ -344,17 +344,15 @@ export class DbService {
       // 评论点赞相关信息
       const like: {
         num: number; // 点赞的数量
-        ifLike?: boolean; // 用户是否点赞 (仅用户登录）
-        likeId?: string; // 用户点赞的 Id （仅用户登录且点赞）
+        ifLiked?: boolean; // 用户是否点赞 (仅用户登录）
+        id?: string; // 用户点赞的 Id （仅用户登录且点赞）
       } = {
         num: (await this.getCommentLikeNumOfComment(comment.id)).data,
       };
       if (uid !== undefined) {
-        like.ifLike = (await this.ifUserLikeComment(uid, fid)).data;
-        if (like.ifLike !== undefined) {
-          like.likeId = (
-            await this.findUserLikeOfComment(uid, comment.id)
-          ).data.id;
+        like.ifLiked = (await this.ifUserLikeComment(uid, comment.id)).data;
+        if (like.ifLiked === true) {
+          like.id = (await this.findUserLikeOfComment(uid, comment.id)).data.id;
         }
       }
       commentData.like = like;
@@ -481,7 +479,7 @@ export class DbService {
    */
   async createCommentLike(commentLike: CommentLike) {
     await this.commentLikeRepository.save(commentLike);
-    return ServiceResult.ok();
+    return ServiceResult.ok(commentLike);
   }
 
   /**
@@ -510,10 +508,10 @@ export class DbService {
    */
   async ifUserLikeComment(uid: string, cid: string) {
     return ServiceResult.ok(
-      (await this.commentLikeRepository.findOneBy({
+      (await this.commentLikeRepository.countBy({
         uid,
         cid,
-      })) !== null,
+      })) > 0,
     );
   }
 
@@ -535,6 +533,18 @@ export class DbService {
   async removeCollection(id: string) {
     await this.collectionRepository.remove(
       await this.collectionRepository.findOneBy({
+        id,
+      }),
+    );
+    return ServiceResult.ok();
+  }
+
+  /**
+   * 删除一个点赞评论
+   */
+  async removeCommentLike(id: string) {
+    await this.commentLikeRepository.remove(
+      await this.commentLikeRepository.findOneBy({
         id,
       }),
     );

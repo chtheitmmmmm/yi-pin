@@ -28,14 +28,14 @@ const valueItems = [{
     <ol>
       <li>
         <h2 class="h2">一、公司文化</h2>
-        <p v-for="c of cultureParas" class="p-3">
+        <p v-for="c of cultureParas" class="p-3" :key="c">
           {{c}}
         </p>
       </li>
       <li>
         <h2 class="h2">二、公司价值观</h2>
         <ul class="container list-group">
-          <li v-for="v of valueItems" class="list-group-item">
+          <li v-for="v of valueItems" class="list-group-item" :key="v.name">
             <h3 class="h3">{{v.name}}</h3>
             <p class="p-1">{{v.description}}</p>
           </li>

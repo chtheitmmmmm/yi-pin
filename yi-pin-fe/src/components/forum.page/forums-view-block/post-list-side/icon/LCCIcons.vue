@@ -1,9 +1,10 @@
 <script setup lang="ts">
 
 import LCCIcon from "@/components/forum.page/forums-view-block/post-list-side/icon/LCCIcon.vue";
+import type {InteractType} from "@/components/forum.page/forums-view-block/post-list-side/PostListSide.vue";
 
 const emits = defineEmits<{
-  (e: 'interact', type: 'like' | 'collection' | 'comment'): void
+  (e: 'interact', type: InteractType): void
 }>()
 
 defineProps<{
@@ -14,7 +15,7 @@ defineProps<{
   ifCollected: boolean,
 }>()
 
-function onInteract(type: 'like' | 'collection' | 'comment') {
+function onInteract(type: InteractType) {
   emits('interact', type)
 }
 
@@ -28,6 +29,6 @@ function onInteract(type: 'like' | 'collection' | 'comment') {
 </div>
 </template>
 
-<style scoped lang="scss">
+<style scoped lang="postcss">
 
 </style>

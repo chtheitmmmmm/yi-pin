@@ -69,7 +69,7 @@ function onSubmit() {
   </div>
   <div class="container flex justify-content-center align-items-center">
     <div v-if="errMessages.length > 0" class="list-group w-5/6">
-      <div class="list-group-item-light" v-for="msg of errMessages">
+      <div class="list-group-item-light" v-for="msg of errMessages" :key="msg">
         <span class="text-danger">*</span>
         <span class="text-decoration-underline">{{msg}}</span>
       </div>

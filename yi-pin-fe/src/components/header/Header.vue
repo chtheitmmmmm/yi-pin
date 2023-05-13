@@ -39,7 +39,7 @@ function onLogout() {
     <div class="nav-item d-lg-none">
         <div data-bs-toggle="offcanvas" data-bs-target="#nav-item-offcanvas">
           <div class="d-flex flex-column justify-content-around split-btn">
-              <div v-for="_ of 3" class="split-bar"></div>
+              <div v-for="_ of 3" class="split-bar" :key="_"></div>
           </div>
         </div>
     </div>
@@ -48,7 +48,7 @@ function onLogout() {
     </div>
     <div tabindex="-1" class='nav-item w-50 offcanvas-lg offcanvas-start ' id="nav-item-offcanvas">
       <div class="navbar d-sm-block d-lg-flex">
-        <div v-for="page of pages" class="nav-item">
+        <div v-for="page of pages" class="nav-item" :key="page.path">
           <NavItem :phrase='page.phrase' :path='page.path' :hash-list="page.hashList"/>
         </div>
       </div>
@@ -63,7 +63,7 @@ function onLogout() {
 </template>
 
 <style scoped lang='scss'>
-@import "@/assets/app";
+@use "@/assets/app" as *;
 
 .ctn {
   background: #ff5757;

@@ -55,7 +55,7 @@ onMounted(() => {
       </PopoverButton>
       <transition enter-active-class="transition ease-out duration-200" enter-from-class="opacity-0 translate-y-1" enter-to-class="opacity-100 translate-y-0" leave-active-class="transition ease-in duration-150" leave-from-class="opacity-100 translate-y-0" leave-to-class="opacity-0 translate-y-1">
         <PopoverPanel class="absolute left-1/2 z-10 flex-column w-screen max-w-max -translate-x-1/2 px-4 bg-light border">
-          <div v-for="hash of hashList" >
+          <div v-for="hash of hashList" :key="hash">
             <router-link :to="`${path}/#${hash}`">{{ hash }}</router-link>
           </div>
         </PopoverPanel>

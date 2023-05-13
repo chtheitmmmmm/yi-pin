@@ -16,7 +16,7 @@ onMounted(() => {
 </template>
 
 <style scoped lang="scss">
-@import "bootstrap/scss/bootstrap";
+@use "bootstrap/scss/bootstrap" as *;
 $max_transform: 3%;
 $radius_delta: 10%;
 @keyframes float {

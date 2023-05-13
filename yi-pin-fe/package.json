@@ -23,7 +23,7 @@
     "marked": "^5.0.1",
     "marked-gfm-heading-id": "^3.0.3",
     "marked-mangle": "^1.0.1",
-    "vue": "^3.2.47",
+    "vue": "^3.3.2",
     "vue-router": "^4.1.6"
   },
   "devDependencies": {

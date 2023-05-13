@@ -22,7 +22,7 @@ withDefaults(defineProps<{
 <template>
 <div>
   <Banner v-if="hasBanner"/>
-  <Area v-for='area in areas' :a='area'>
+  <Area v-for='area in areas' :a='area' :key="area.link">
     <component :is='area.slot' />
   </Area>
 </div>

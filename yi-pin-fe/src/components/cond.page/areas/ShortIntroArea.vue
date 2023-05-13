@@ -15,7 +15,7 @@ const introContent = reactive([
   <div class="ctn container">
     <img class="float-end logo m-3" alt="公司logo" src="@/assets/logo.jpg" />
     <div>
-    <p class="para" v-for="para of introContent">
+    <p class="para" v-for="para of introContent" :key="para">
       {{para}}
     </p>
   </div>

@@ -3,6 +3,8 @@ import type {Profile, UserProfile, UserProfileDto} from "@/entities/user";
 import {profileToURL} from "@/entities/user";
 import dayjs from "dayjs";
 import {marked} from "marked";
+import type {CommentData, CommentDto} from "@/entities/comment";
+import {commentDataTransform} from "@/entities/comment";
 
 export interface ForumLike {
   id?: string,
@@ -51,17 +53,7 @@ export interface ForumDetailDto {
   },
   like: ForumLike,
   collection: ForumCollection,
-  comments: {
-    id: string, // 评论的 id
-    content: string, // 评论的内容
-    time: string, // 评论的时间
-    author: UserProfileDto,
-    like: {
-      id?: string,
-      ifLiked?: boolean,
-      num: number,
-    }
-  }[],
+  comments: CommentDto[],
 }
 
 export interface ForumDetail {
@@ -79,17 +71,7 @@ export interface ForumDetail {
   },
   like: ForumLike,
   collection: ForumCollection,
-  comments: {
-    id: string, // 评论的 id
-    content: string, // 评论的内容
-    time: Dayjs, // 评论的时间
-    author: UserProfile,
-    like: {
-      id?: string,
-      ifLiked?: boolean,
-      num: number,
-    }
-  }[],
+  comments: CommentData[],
 }
 
 export function forumDetailTransform(dto: ForumDetailDto): ForumDetail {
@@ -98,10 +80,8 @@ export function forumDetailTransform(dto: ForumDetailDto): ForumDetail {
   } as any
   detail.createTime = dayjs(dto.createTime) as any
   detail.author.profile = profileToURL(dto.author.profile) as any
-  detail.comments.forEach((c: any) => {
-    c.time = dayjs(c.time) as any
-    c.author.profile = profileToURL(c.author.profile) as any
-  })
+  detail.comments = detail.comments.map(commentDataTransform)
+  detail.comments.sort((c1: CommentData, c2: CommentData) => c2.time.diff(c1.time))
   detail.content = marked.parse(dto.content)
   return detail
 }
