@@ -28,7 +28,7 @@ function onRl(ifRegister: boolean) {
   transition: 0.2s;
   &:hover {
     font-size: 1.4em;
-    color: $primary;
+    color: primary_color();
   }
   cursor: pointer;
 }

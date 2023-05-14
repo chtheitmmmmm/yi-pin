@@ -2,18 +2,13 @@
 
 import type { User } from '@/entities/user';
 import {Popover, PopoverButton, PopoverPanel} from "@headlessui/vue";
+import {useSessionStore} from "@/stores/session";
 
 defineProps<{
   userData: User
 }>()
 
-const emits = defineEmits<{
-  (e: "logout"): void
-}>()
-
-function onLogout() {
-  emits("logout")
-}
+const session = useSessionStore();
 
 </script>
 
@@ -32,7 +27,7 @@ function onLogout() {
         <li class="link-secondary">
           <router-link to='/profile'>主页</router-link>
         </li>
-        <li @click='onLogout' class="link-primary">
+        <li @click='session.logout()' class="link-primary">
           <a>退出登录</a>
         </li>
       </PopoverPanel>

@@ -1,13 +1,11 @@
 <script setup lang="ts">
 
-import type {Session} from "@/entities/session";
-import {inject, ref} from "vue";
+import { ref } from "vue";
 import ForumsViewBlock from "@/components/forum.page/forums-view-block/ForumsViewBlock.vue";
 import ForumEditBlock from "@/components/forum.page/forum-edit-block/ForumEditBlock.vue";
 import PublicSuccessModal from "@/components/forum.page/PublicSuccessModal.vue";
 import BackBrowseButton from "@/components/forum.page/BackBrowseButton.vue";
 
-const session = inject<Session>("session")!
 const ifEditing = ref(false)
 const modal = ref<typeof PublicSuccessModal | null>(null)
 

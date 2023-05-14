@@ -13,10 +13,10 @@ export interface ForumLike {
 }
 
 export interface ForumCollection {
-    id?: string,
-    ifCollected?: boolean,
-    num: number,
-  }
+  id?: string,
+  ifCollected?: boolean,
+  num: number,
+}
 
 // Get /api/forum 响应体
 export interface ForumProfileDto {
@@ -35,6 +35,11 @@ export interface ForumProfile {
   like: ForumLike,
   collection: ForumCollection,
   commentNum: number,
+}
+
+export function forumProfileTransform(forumProfile: ForumProfileDto): ForumProfile {
+  forumProfile.createTime = dayjs(forumProfile.createTime) as any;
+  return forumProfile as any;
 }
 
 // Get /api/forum/:id 响应体

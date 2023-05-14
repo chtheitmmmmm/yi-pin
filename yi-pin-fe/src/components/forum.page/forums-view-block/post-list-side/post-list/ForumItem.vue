@@ -51,7 +51,7 @@ defineProps<ForumProfile>()
   .forum-item-title {
     font-size: 2em;
     &:hover {
-      color: $primary;
+      color: primary_color();
     }
     + div {
       font-family: sans-serif;
@@ -77,7 +77,7 @@ defineProps<ForumProfile>()
       &:hover {
         animation: bounce 0.5s;
         + span {
-          color: $primary;
+          color: primary_color();
         }
       }
     }

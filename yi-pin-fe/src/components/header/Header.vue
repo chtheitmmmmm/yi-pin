@@ -3,9 +3,8 @@ import Logo from "./Logo.vue";
 import NavItem from './NavItem.vue';
 import type { NavItemArea } from '@/components/header/NavItem.vue';
 import Login from '@/components/header/Login.vue';
-import { inject } from 'vue';
 import Profile from '@/components/header/Profile.vue';
-import type {Session} from "@/entities/session";
+import {useSessionStore} from "@/stores/session";
 
 defineProps<{
   pages: {
@@ -16,7 +15,7 @@ defineProps<{
   }[]
 }>()
 
-const session = inject<Session>('session')!
+const session = useSessionStore();
 
 const emits = defineEmits<{
   (e: "rl", ifRegister: boolean): void,
@@ -24,10 +23,6 @@ const emits = defineEmits<{
 
 function onRl(ifRegister: boolean) {
   emits('rl', ifRegister)
-}
-
-function onLogout() {
-  session.logout()
 }
 
 </script>
@@ -55,7 +50,7 @@ function onLogout() {
     </div>
     <div class='nav-item'>
       <Login @rl='onRl' v-if='!session.user'/>
-      <Profile v-else :user-data='session.user' @logout='onLogout'/>
+      <Profile v-else :user-data='session.user'/>
     </div>
   </div>
   </div>
@@ -75,15 +70,15 @@ function onLogout() {
     width: $size;
     height: $size;
     .split-bar {
-      height:calc($size / 6);
-      background: $primary;
+      height: calc($size / 6);
+      background: primary_color();
     }
     &:hover .split-bar {
         background: white;
       }
   }
   #nav-item-offcanvas {
-    $color: $secondary;
+    $color: secondary_color();
     background: $color;
     > div > div:hover {
       background-color: lighten($color, 2);

@@ -69,10 +69,10 @@ onMounted(() => {
       width: 2px;
     }
     &[class*="text-primary"] {
-      border-bottom-color: $primary;
+      border-bottom-color: primary_color();
     }
     &[class*="text-secondary"] {
-      border-bottom-color: $secondary;
+      border-bottom-color: secondary_color();
     }
   }
   .editor {

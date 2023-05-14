@@ -2,7 +2,9 @@
 import axios from 'axios';
 import {inject, reactive, ref} from 'vue';
 import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
-import type {Session} from "@/entities/session";
+import {useSessionStore} from "@/stores/session";
+
+const session = useSessionStore();
 
 const emits = defineEmits<{
   (e: 'close'): void
@@ -13,8 +15,6 @@ const loginInput = {
   account: '',
   password: ''
 }
-
-const session = inject<Session>('session')!
 
 // 是否正在登录
 const logging = ref(false)

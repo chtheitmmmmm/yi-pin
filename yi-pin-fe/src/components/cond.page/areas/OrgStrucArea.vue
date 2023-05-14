@@ -113,9 +113,9 @@ const departs = [{
       width: 100%;
       display: inline-block;
       overflow: hidden;
-      border-bottom: 0.05em $primary solid;
+      border-bottom: 0.05em primary_color() solid;
       font-weight: bold;
-      color: $primary;
+      color: primary_color();
     }
   }
   h3 {

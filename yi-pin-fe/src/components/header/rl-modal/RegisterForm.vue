@@ -1,13 +1,16 @@
 <script setup lang='ts'>
 
 import InputFormField from '@/components/header/rl-modal/InputFormField.vue';
-import {inject, reactive, ref} from 'vue';
+import {reactive, ref} from 'vue';
 import axios from 'axios';
-import type { Session } from "@/entities/session";
+import {useSessionStore} from "@/stores/session";
+
 
 const emits = defineEmits<{
   (e: "close"): void
 }>()
+
+const session = useSessionStore()
 
 const registerInput = reactive({
   account: '',
@@ -20,8 +23,6 @@ const registerError = reactive({
   errMessage: ''
 })
 
-const session = inject<Session>('session')!
-
 const registering = ref(false)
 
 function onRegister() {
@@ -32,26 +33,23 @@ function onRegister() {
     axios.post("user/register", {
       account: registerInput.account,
       password: registerInput.password
+    }).then(value => {
+      registerError.hasError = false;
+      session.login(value.data.data);
+      emits('close')
+    }).catch(reason => {
+      registerError.hasError = true
+      if (reason.response.data.statusCode) {
+         registerError.errMessage = reason.response.data.message[0];
+      } else if (reason.response.data.errCode) {
+         registerError.errMessage = reason.response.data.errMsg;
+      } else {
+        registerError.errMessage = '注册失败'
+      }
+    // @ts-ignore
+    }).finally(() => {
+      registering.value = false
     })
-      .then(value => {
-        registerError.hasError = false;
-        session.login(value.data.data);
-        emits('close')
-      })
-      .catch(reason => {
-        registerError.hasError = true
-        if (reason.response.data.statusCode) {
-           registerError.errMessage = reason.response.data.message[0];
-        } else if (reason.response.data.errCode) {
-           registerError.errMessage = reason.response.data.errMsg;
-        } else {
-          registerError.errMessage = '注册失败'
-        }
-      })
-      // @ts-ignore
-      .finally(() => {
-        registering.value = false
-      })
   }
 }
 

@@ -149,16 +149,10 @@ export class DbService {
     return ServiceResult.ok();
   }
 
-  /**
-   * 获取所有帖子简略信息（列表展示）
-   */
-  async findAllForums(type: ForumInter['type'], uid?: string) {
-    const allForums = await this.forumRepository.findBy({
-      type,
-    });
+  async forumsToList(forums: Forum[], uid?: string) {
     const allData = [];
-    for (let i = 0; i < allForums.length; ++i) {
-      const f = allForums[i];
+    for (let i = 0; i < forums.length; ++i) {
+      const f = forums[i];
       const data: any = {
         id: f.id,
         title: f.title,
@@ -188,6 +182,16 @@ export class DbService {
       allData.push(data);
     }
     return ServiceResult.ok(allData);
+  }
+
+  /**
+   * 获取所有帖子简略信息（列表展示）
+   */
+  async findAllForums(type: ForumInter['type'], uid?: string) {
+    const allForums = await this.forumRepository.findBy({
+      type,
+    });
+    return await this.forumsToList(allForums, uid);
   }
 
   /**
@@ -229,6 +233,70 @@ export class DbService {
       }
     }
     return ServiceResult.ok(forumData);
+  }
+
+  /**
+   * 找到用户所有创作的帖子
+   */
+  async findAllUserWorkForum(uid: string) {
+    const forums = await this.forumRepository.findBy({
+      author: uid,
+    });
+    return await this.forumsToList(forums, uid);
+  }
+
+  /**
+   * 找到用户所有点赞的帖子
+   */
+  async findAllUserLikeForum(uid: string) {
+    const forumLikes = await this.likeRepository.findBy({
+      uid,
+    });
+    const forums = [];
+    for (const forumLike of forumLikes) {
+      forums.push(
+        await this.forumRepository.findOneBy({
+          id: forumLike.fid,
+        }),
+      );
+    }
+    return await this.forumsToList(forums, uid);
+  }
+
+  /**
+   * 找到用户所有收藏的帖子
+   */
+  async findAllUserCollectionForum(uid: string) {
+    const forumCollections = await this.collectionRepository.findBy({
+      uid,
+    });
+    const forums = [];
+    for (const forumCollection of forumCollections) {
+      forums.push(
+        await this.forumRepository.findOneBy({
+          id: forumCollection.fid,
+        }),
+      );
+    }
+    return await this.forumsToList(forums, uid);
+  }
+
+  /**
+   * 找到用户所有评论的帖子
+   */
+  async findAllUserCommentForum(uid: string) {
+    const forumComments = await this.commentRepository.findBy({
+      author: uid,
+    });
+    const forums = [];
+    for (const forumComment of forumComments) {
+      forums.push(
+        await this.forumRepository.findOneBy({
+          id: forumComment.fid,
+        }),
+      );
+    }
+    return await this.forumsToList(forums, uid);
   }
 
   /**

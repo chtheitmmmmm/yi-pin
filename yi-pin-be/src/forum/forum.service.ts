@@ -28,4 +28,36 @@ export class ForumService {
       throw ServiceResult.forumDontExists();
     }
   }
+
+  async findAllUserWorkForum(uid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      return await this.dbService.findAllUserWorkForum(uid);
+    } else {
+      throw ServiceResult.userDontExists();
+    }
+  }
+
+  async findAllUserLikeForum(uid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      return await this.dbService.findAllUserLikeForum(uid);
+    } else {
+      throw ServiceResult.userDontExists();
+    }
+  }
+
+  async findAllUserCollectionForum(uid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      return await this.dbService.findAllUserCollectionForum(uid);
+    } else {
+      throw ServiceResult.userDontExists();
+    }
+  }
+
+  async findAllUserCommentForum(uid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      return await this.dbService.findAllUserCommentForum(uid);
+    } else {
+      throw ServiceResult.userDontExists();
+    }
+  }
 }

@@ -1,0 +1,7 @@
+@use 'sass:map';
+@use "./var" as app;
+
+@forward "bootstrap/scss/bootstrap" with (
+  $primary: app.primary_color(),
+  $secondary: app.secondary_color(),
+);

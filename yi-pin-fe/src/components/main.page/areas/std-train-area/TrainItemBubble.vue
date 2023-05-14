@@ -96,7 +96,7 @@ $radius_delta: 10%;
 }
 
 .ctn {
-    background-color: $primary;
+    background-color: primary_color();
     animation: float 10s infinite ease-in;
     transform: translate(0, 0);
     border-radius: 50%;

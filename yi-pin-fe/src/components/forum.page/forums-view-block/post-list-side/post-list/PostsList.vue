@@ -4,8 +4,8 @@ import axios from "axios";
 import {inject, ref} from "vue";
 import ForumItem from "@/components/forum.page/forums-view-block/post-list-side/post-list/ForumItem.vue";
 import dayjs from "dayjs";
-import type {Session} from "@/entities/session";
 import type {ForumProfile, ForumProfileDto} from "@/entities/forum";
+import {useSessionStore} from "@/stores/session";
 
 const emits = defineEmits<{
   'view': [fid: string]
@@ -16,7 +16,7 @@ function onView(fid: string) {
 }
 
 const forumType = inject<any>('forumType')!;
-const session = inject<Session>('session')!;
+const session = useSessionStore();
 const ftr = inject<string>('ftr')!; // 搜索值
 
 const allForums = ref<ForumProfile[]>(

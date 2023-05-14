@@ -3,7 +3,7 @@
 import ForumEditor from "@/components/forum.page/forum-edit-block/ForumEditor.vue";
 import {inject, reactive, ref} from "vue";
 import axios from "axios";
-import type {Session} from "@/entities/session";
+import {useSessionStore} from "@/stores/session";
 
 const emits = defineEmits<{
   (e: "public"): void
@@ -11,7 +11,7 @@ const emits = defineEmits<{
 
 const submitting = ref(false)
 
-const session = inject<Session>('session')!
+const session = useSessionStore()
 
 const formData = reactive({
   type: 0,
@@ -39,9 +39,8 @@ function onSubmit() {
     } else {
       errMessages = [err.response.data.errMsg];
     }
-  })
   //@ts-ignore
-    .finally(() => {
+  }).finally(() => {
       submitting.value = false
     })
 }

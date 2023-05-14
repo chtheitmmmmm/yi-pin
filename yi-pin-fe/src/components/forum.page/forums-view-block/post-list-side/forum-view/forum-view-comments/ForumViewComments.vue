@@ -4,14 +4,14 @@ import {inject, ref} from "vue";
 import type {ForumDetail} from "@/entities/forum";
 import {ElInput} from "element-plus";
 import axios from "axios";
-import type {Session} from "@/entities/session";
 import {ElMessage} from "element-plus";
 import ForumViewComment
   from "@/components/forum.page/forums-view-block/post-list-side/forum-view/forum-view-comments/ForumViewComment.vue";
+import {useSessionStore} from "@/stores/session";
 
 const forum = inject<ForumDetail>('forum')!
 const inputComment = ref<typeof ElInput | null>(null)
-const session = inject<Session>('session')!
+const session = useSessionStore()
 const commenting = ref(false)
 const commentContent = ref('')
 

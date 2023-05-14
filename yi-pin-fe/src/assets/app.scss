@@ -1,14 +1,17 @@
-$primary: #4dd8ab;
-$secondary: #d75656;
-@import "bootstrap/scss/bootstrap";
+@use 'sass:map';
+@forward "var";
+@use 'bootstrap';
+@use 'element-plus';
+@use 'tailwind';
 
 $font-name: "FZBeiWeiKaiShu-S19S";
 @font-face {
   font-family: $font-name;
   src: local($font-name), url("@/assets/fonts/" + $font-name + ".ttf");
 }
+
 * {
-  font-family: $font-name;
+  font-family: $font-name, Serif;
 }
 
 body {
@@ -18,18 +21,19 @@ body {
 }
 
 // 隐藏 scroll bar
-@layer scrollbar-hidden {
-  ::-webkit-scrollbar {
+.scrollbar-hidden {
+  *::-webkit-scrollbar {
+    display: none;
+  }
+  &::-webkit-scrollbar {
     display: none;
   }
 }
 
 // 取消选中伪元素的状态
-@layer non-selection {
+.non-selection {
   ::selection {
     all: unset;
   }
-}
-.non-selection {
   cursor: default;
 }

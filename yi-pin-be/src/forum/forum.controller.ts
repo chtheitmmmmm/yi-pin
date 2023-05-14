@@ -50,4 +50,28 @@ export class ForumController {
   ) {
     return await this.forumService.findOneForum(fid, uid);
   }
+
+  @Get('user/work/:uid')
+  @WrapResult
+  async findAllUserWorkForum(@Param('uid') uid: string) {
+    return await this.forumService.findAllUserWorkForum(uid);
+  }
+
+  @Get('user/like/:uid')
+  @WrapResult
+  async findAllUserLikeForum(@Param('uid') uid: string) {
+    return await this.forumService.findAllUserLikeForum(uid);
+  }
+
+  @Get('user/collection/:uid')
+  @WrapResult
+  async findAllUserCollectionForum(@Param('uid') uid: string) {
+    return await this.forumService.findAllUserCollectionForum(uid);
+  }
+
+  @Get('user/comment/:uid')
+  @WrapResult
+  async findAllUserCommentForum(@Param('uid') uid: string) {
+    return await this.forumService.findAllUserCommentForum(uid);
+  }
 }

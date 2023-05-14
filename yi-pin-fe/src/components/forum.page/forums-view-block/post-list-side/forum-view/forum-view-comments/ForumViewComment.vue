@@ -2,16 +2,16 @@
 
 import LCCIcon from "@/components/forum.page/forums-view-block/post-list-side/icon/LCCIcon.vue";
 import axios from "axios";
-import type {Session} from "@/entities/session";
 import {inject} from "vue";
 import type {ForumDetail} from "@/entities/forum";
+import {useSessionStore} from "@/stores/session";
 
 const props = defineProps<{
   cid: string
 }>()
 
 const forum = inject<ForumDetail>('forum')!
-const session = inject<Session>('session')!
+const session = useSessionStore()
 const comment = forum.comments.find(c => c.id === props.cid)!
 
 function onLike() {

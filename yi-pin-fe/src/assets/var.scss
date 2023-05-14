@@ -1,0 +1,14 @@
+@use 'sass:map';
+
+$colors: (
+  'primary': #4dd8ab,
+  'secondary': #d75656
+);
+
+@function primary_color() {
+  @return map.get($colors, 'primary')
+}
+
+@function secondary_color() {
+  @return map.get($colors, 'secondary')
+}

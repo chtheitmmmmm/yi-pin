@@ -2,17 +2,16 @@
 
 import PostsList from "@/components/forum.page/forums-view-block/post-list-side/post-list/PostsList.vue";
 import SearchFrame from "@/components/forum.page/forums-view-block/post-list-side/SearchFrame.vue";
-import {nextTick, provide, ref, watch} from "vue";
-import ForumView from "@/components/forum.page/forums-view-block/post-list-side/forum-view/ForumView.vue";
+import {inject, nextTick, provide,type Ref, ref, watch} from "vue";
 import BackBrowseButton from "@/components/forum.page/BackBrowseButton.vue";
 import ForumViewLoading from "@/components/forum.page/forums-view-block/post-list-side/forum-view/ForumViewLoading.vue";
 import PostsListLoading from "@/components/forum.page/forums-view-block/post-list-side/post-list/PostsListLoading.vue";
-import {session} from "@/entities/session";
-import RefreshButton from "@/components/forum.page/forums-view-block/post-list-side/RefreshButton.vue";
+import RefreshButton from "@/components/forum.page/forums-view-block/RefreshButton.vue";
+import {useSessionStore} from "@/stores/session";
 
 provide('ftr', ref(''))
 
-const selection = ref<string | null>(null)
+const selection = inject<Ref<string | null>>('selection')!;
 const postsList = ref<typeof PostsList | null>(null)
 const showList = ref(true)
 const forumView = ref<HTMLDivElement | null>(null)
@@ -28,6 +27,7 @@ function onBackView() {
 
 const forumType = ref(0)
 provide('forumType', forumType)
+const session = useSessionStore();
 
 function onRefreshList() {
   showList.value = false;
@@ -70,12 +70,11 @@ watch(
   }
 )
 
-watch(
-  session,
-  () => {
+session.$subscribe(() => {
     onRefreshList()
-  }
-)
+}, {
+    immediate: true
+})
 
 const theWindow = window;
 
@@ -146,11 +145,11 @@ const theWindow = window;
 
 .forum-type-switch {
   > div {
-    color: $primary;
+    color: primary_color();
     font-size: 1.2em;
     border-bottom: solid transparent;
     &[data-checked=true] {
-      border-bottom-color: $secondary;
+      border-bottom-color: secondary_color();
     }
   }
 }

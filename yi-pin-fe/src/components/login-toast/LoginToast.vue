@@ -1,10 +1,10 @@
 <script setup lang='ts'>
 
-import {inject, nextTick, onMounted, reactive, ref, watch} from 'vue';
+import {nextTick, onMounted, reactive, ref, watch} from 'vue';
 import { Toast } from 'bootstrap';
-import type {Session} from "@/entities/session";
+import {useSessionStore} from "@/stores/session";
 
-const session = inject<Session>('session')!
+const session = useSessionStore();
 
 const toast = ref<HTMLDivElement | null>(null)
 let theToast = reactive<Toast>({} as unknown as Toast)

@@ -36,7 +36,7 @@ const paths = {
 </template>
 
 <style scoped lang="scss">
-@use "@/assets/app" as *;
+@use "@/assets/app" as app;
 
 .icon {
   width: 2em;
@@ -56,7 +56,7 @@ const paths = {
     &:hover {
       animation: bounce 0.5s;
       + span {
-        color: $primary;
+        color: app.primary_color();
       }
     }
   }
