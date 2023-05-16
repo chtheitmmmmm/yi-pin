@@ -10,49 +10,41 @@ import {onMounted, ref} from "vue";
 import CopConArea from "@/components/main.page/areas/CopConArea.vue";
 import StdTrainArea from "@/components/main.page/areas/std-train-area/StdTrainArea.vue";
 
-const areas: BodyArea[] = [{  // 简介区域
-  phrase: "实习体验",
-  link: "area-pe",
-  tt: "实习体验",
-  slot: PracExpArea,
-  path: "",
-  hashList: []
+interface PageBodyArea extends BodyArea {
+    phrase: string,
+}
+
+const areas: PageBodyArea[] = [{  // 简介区域
+    phrase: "实习体验",
+    hash: "area-pe",
+    tt: "实习体验",
+    slot: PracExpArea,
 }, {
-  phrase: "笔面试培训",
-  link: "area-praexp",
-  tt: "笔面试培训",
-  slot: TestsTrainArea,
-  path: "",
-  hashList: []
+    phrase: "笔面试培训",
+    hash: "area-praexp",
+    tt: "笔面试培训",
+    slot: TestsTrainArea,
 }, {  // 新闻区域
-  phrase: "岗前培训",
-  link: "area-pre-train",
-  tt: "岗前培训",
-  slot: NewsArea,
-  path: "",
-  hashList: []
+    phrase: "岗前培训",
+    hash: "area-pre-train",
+    tt: "岗前培训",
+    slot: NewsArea,
 }, {
-  phrase: "在岗业务",
-  link: "area-std-bus",
-  tt: "在岗业务",
-  slot: StdTrainArea,
-  path: "",
-  hashList: []
+    phrase: "在岗业务",
+    hash: "area-std-bus",
+    tt: "在岗业务",
+    slot: StdTrainArea,
 }, {
     phrase: "专属职业规划",
-    link: "area-plan",
+    hash: "area-plan",
     tt: "专属职业规划",
     slot: PlanArea,
-    path: "",
-    hashList: []
 }, {
     phrase: "合作咨询",
-    link: "area-copcon",
+    hash: "area-copcon",
     tt: "合作咨询",
     slot: CopConArea,
-    path: "",
-    hashList: []
-}]
+}];
 
 const anchors = ref<HTMLAnchorElement[] | null>(null)
 
@@ -71,7 +63,7 @@ onMounted(() => {
 <div class="main-ctn">
   <div class="areas-index">
     <nav id="nav-of-areas" class="list-group" style="position: relative">
-      <a v-for="area of areas" :key="area.link" class="list-group-item list-group-item-action text-center" :href="`#${area.link}`" ref="anchors">
+      <a v-for="area of areas" :key="area.hash" class="list-group-item list-group-item-action text-center" :href="`#${area.hash}`" ref="anchors">
           {{area.phrase}}
       </a>
     </nav>

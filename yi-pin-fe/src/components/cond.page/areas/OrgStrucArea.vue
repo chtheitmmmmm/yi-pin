@@ -67,7 +67,7 @@ const departs = [{
             <p>
               作为服务培训型项目，我们坚持“以人为本”的组织方针，运用松散、灵活的具有高度适应性的有机式组织形式来迎合行业需求。我们对公司员工进行劳动分工，但是员工的工作不设立过于标准化的规则和条例。各部门员工应掌握熟练的专业技能，并在经过培训能处理多种复杂问题。通过先期及营业后定期培训，将职业行为标准灌输到员工的头脑中，而不需要多少正式的规则和直接监督。</p>
           </div>
-          <img src="/cond/org-struc.png" alt="组织架构图片"/>
+          <img src="/cpng/org-struc.png" alt="组织架构图片"/>
         </li>
         <li class="m-3">
           <h2>二、主要部门</h2>
@@ -82,15 +82,6 @@ const departs = [{
               </p>
             </li>
           </ul>
-          <div style="display: flex;">
-            <div style="flex: 1; text-align: end">
-              <img src="/cond/struc1.png" alt="结构图谱" />
-            </div>
-            <div style="flex: 1">
-              <img src="/cond/meeting1.png" alt="会议图1" />
-              <img src="/cond/meeting2.png" alt="会议图2" />
-            </div>
-          </div>
         </li>
       </ol>
     </div>

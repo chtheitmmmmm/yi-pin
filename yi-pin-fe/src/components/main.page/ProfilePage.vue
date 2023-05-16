@@ -1,17 +1,15 @@
 <script setup lang='ts'>
 
-import type { User } from '@/entities/user';
+import {useSessionStore} from "@/stores/session";
 
-// defineProps<{
-//   userData: User
-// }>()
+const session = useSessionStore();
 
 </script>
 
 <template>
 <div class='container'>
   <div>
-    <img  alt='用户头像'/>
+    <img  alt='用户头像' :src="session.user!.profile"/>
   </div>
 </div>
 </template>

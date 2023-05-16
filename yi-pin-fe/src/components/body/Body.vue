@@ -3,10 +3,11 @@
 import Area from '@/components/body/Area.vue';
 import type { NavItemArea } from '@/components/header/NavItem.vue';
 import Banner from "@/components/body/Banner.vue";
-export interface BodyArea extends NavItemArea {
+
+export interface BodyArea {
   tt: string,
   slot: any   // vue 组件
-  link: string
+  hash: string
 }
 
 withDefaults(defineProps<{
@@ -16,13 +17,12 @@ withDefaults(defineProps<{
   hasBanner: true
 })
 
-
 </script>
 
 <template>
 <div>
   <Banner v-if="hasBanner"/>
-  <Area v-for='area in areas' :a='area' :key="area.link">
+  <Area v-for='area in areas' :a='area' :key="area.hash">
     <component :is='area.slot' />
   </Area>
 </div>

@@ -9,9 +9,9 @@ import {useSessionStore} from "@/stores/session";
 defineProps<{
   pages: {
     phrase: string,
-    path: string,
+    paths: string | [string, string][],
     component: any,
-    hashList: string[];
+    name: string,
   }[]
 }>()
 
@@ -43,8 +43,8 @@ function onRl(ifRegister: boolean) {
     </div>
     <div tabindex="-1" class='nav-item w-50 offcanvas-lg offcanvas-start ' id="nav-item-offcanvas">
       <div class="navbar d-sm-block d-lg-flex">
-        <div v-for="page of pages" class="nav-item" :key="page.path">
-          <NavItem :phrase='page.phrase' :path='page.path' :hash-list="page.hashList"/>
+        <div v-for="page of pages" class="nav-item" :key="page.name">
+          <NavItem :phrase='page.phrase' :paths='page.paths'/>
         </div>
       </div>
     </div>

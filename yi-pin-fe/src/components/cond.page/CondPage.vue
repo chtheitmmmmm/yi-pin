@@ -7,27 +7,22 @@ import CultureArea from "@/components/cond.page/areas/CultureArea.vue";
 import Body from "@/components/body/Body.vue";
 import {onMounted, ref} from "vue";
 
-const areas: BodyArea[] = [{
-  phrase: "公司简介",
-  link: "area-si",
-  tt: "公司简介",
-  slot: ShortIntroArea,
-  path: "",
-  hashList: []
+const areas = [{
+    phrase: "公司简介",
+    hash: "short-intro",
+    tt: "公司简介",
+    slot: ShortIntroArea,
 }, {
-  phrase: "组织架构",
-  link: "area-os",
-  tt: "组织架构",
-  slot: OrgStrucArea,
-  path: "",
-  hashList: []
+    phrase: "组织架构",
+    hash: "org-con",
+    tt: "组织架构",
+    slot: OrgStrucArea,
+    path: "",
 }, {
-  phrase: "公司文化及价值观",
-  link: "area-cul",
-  tt: "公司文化及价值观",
-  slot: CultureArea,
-  path: "",
-  hashList: []
+    phrase: "公司文化及价值观",
+    hash: "culture",
+    tt: "公司文化及价值观",
+    slot: CultureArea,
 }]
 
 const anchors = ref<HTMLAnchorElement[] | null>(null)
@@ -47,7 +42,7 @@ onMounted(() => {
 <div class="main-ctn">
   <div class="areas-index">
     <nav id="cond-nav-of-areas" class="list-group" style="position: relative">
-      <a v-for="area of areas" class="list-group-item list-group-item-action text-center" :href="`#${area.link}`" ref="anchors" :key="area.link">
+      <a v-for="area of areas" class="list-group-item list-group-item-action text-center" :href="`#${area.hash}`" ref="anchors" :key="area.hash">
           {{area.phrase}}
       </a>
     </nav>

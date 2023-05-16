@@ -6,7 +6,7 @@
 <div>
     <div class="ctn container">
         <div>
-            <a class="link-info" href="#">霍兰德测试</a>
+            <a class="link-info" href="https://www.zxgj.cn/g/holland2">霍兰德测试</a>
         </div>
     </div>
 </div>

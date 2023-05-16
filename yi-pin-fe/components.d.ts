@@ -22,6 +22,7 @@ declare module '@vue/runtime-core' {
     ElContainer: typeof import('element-plus/es')['ElContainer']
     ElEmpty: typeof import('element-plus/es')['ElEmpty']
     ElForm: typeof import('element-plus/es')['ElForm']
+    ElHeader: typeof import('element-plus/es')['ElHeader']
     ElMain: typeof import('element-plus/es')['ElMain']
     ElScrollbar: typeof import('element-plus/es')['ElScrollbar']
     ElSkeleton: typeof import('element-plus/es')['ElSkeleton']
@@ -43,6 +44,7 @@ declare module '@vue/runtime-core' {
     Header: typeof import('./src/components/header/Header.vue')['default']
     InfoPage: typeof import('./src/components/info.page/InfoPage.vue')['default']
     InputFormField: typeof import('./src/components/header/rl-modal/InputFormField.vue')['default']
+    InterviewTrain: typeof import('./src/components/main.page/areas/tests-trains/InterviewTrain.vue')['default']
     InvitePage: typeof import('./src/components/invite.page/InvitePage.vue')['default']
     LCCIcon: typeof import('./src/components/forum.page/forums-view-block/post-list-side/icon/LCCIcon.vue')['default']
     LCCIcons: typeof import('./src/components/forum.page/forums-view-block/post-list-side/icon/LCCIcons.vue')['default']
@@ -53,6 +55,7 @@ declare module '@vue/runtime-core' {
     MainPage: typeof import('./src/components/main.page/MainPage.vue')['default']
     NavItem: typeof import('./src/components/header/NavItem.vue')['default']
     OrgStrucArea: typeof import('./src/components/cond.page/areas/OrgStrucArea.vue')['default']
+    Paragraph: typeof import('./src/components/Paragraph.vue')['default']
     PlanArea: typeof import('./src/components/main.page/areas/PlanArea.vue')['default']
     PleaseWait: typeof import('./src/components/PleaseWait.vue')['default']
     PostListSide: typeof import('./src/components/forum.page/forums-view-block/PostListSide.vue')['default']
@@ -75,6 +78,8 @@ declare module '@vue/runtime-core' {
     ShortIntroArea: typeof import('./src/components/cond.page/areas/ShortIntroArea.vue')['default']
     StdTrainArea: typeof import('./src/components/main.page/areas/std-train-area/StdTrainArea.vue')['default']
     TestsTrainArea: typeof import('./src/components/main.page/areas/TestsTrainArea.vue')['default']
+    TestTrain: typeof import('./src/components/main.page/areas/tests-trains/TestTrain.vue')['default']
     TrainItemBubble: typeof import('./src/components/main.page/areas/std-train-area/TrainItemBubble.vue')['default']
+    WrittenTestsTrain: typeof import('./src/components/main.page/areas/tests-trains/WrittenTestsTrain.vue')['default']
   }
 }

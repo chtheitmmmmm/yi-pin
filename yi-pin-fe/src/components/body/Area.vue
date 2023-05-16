@@ -11,7 +11,7 @@ const props = defineProps<{
 <template>
 <div class='container'>
   <div class='navbar'>
-    <h1 class='h1 text-secondary'  :id='a.link'>
+    <h1 class='h1 text-secondary'  :id='a.hash'>
       {{ a.tt }}
     </h1>
   </div>
