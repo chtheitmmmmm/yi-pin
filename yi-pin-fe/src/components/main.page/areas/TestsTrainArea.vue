@@ -2,11 +2,11 @@
 
 const trains = [{
   name: "笔试培训",
-  src: "/trains/test1.png",
+  src: "/trains/test1.jpg",
   link: '/written-train'
 }, {
   name: "面试培训",
-  src: "/trains/test2.png",
+  src: "/trains/test2.jpg",
   link: '/interview-train'
 }]
 
@@ -15,9 +15,9 @@ const trains = [{
 <template>
 <div class="card-group">
   <div v-for="t of trains" :key="t.name" class="card">
-    <div class="btn btn-outline-primary card-header text-center">
-      <router-link :to="t.link">{{t.name}}</router-link>
-    </div>
+    <router-link :to="t.link" class="btn btn-outline-primary card-header text-center">
+        {{t.name}}
+    </router-link>
     <div class="card-body"></div>
     <div class="card-footer container">
       <img :src="t.src" :alt="t.name" />

@@ -7,6 +7,11 @@ import ForumPage from "@/components/forum.page/ForumPage.vue";
 import AppPage from "@/components/app.page/AppPage.vue";
 import WrittenTestsTrain from "@/components/main.page/areas/tests-trains/WrittenTestsTrain.vue";
 import InterviewTrain from "@/components/main.page/areas/tests-trains/InterviewTrain.vue";
+import YPOfficialPage from "@/components/info.page/yp-official-page/YPOfficialPage.vue";
+import PublicInfoPage from "@/components/info.page/public-info-page/PublicInfoPage.vue";
+import PracExpPage from "@/components/main.page/areas/prac-exp-page/PracExpPage.vue";
+import PreTrainPage from "@/components/main.page/areas/pre-train-page/PreTrainPage.vue";
+import StdTrainPage from "@/components/main.page/areas/std-train-area/std-train-page/StdTrainPage.vue";
 
 
 
@@ -18,8 +23,8 @@ export const links =  [{
     component: MainPage,
 }, {
     phrase: "公司概况",
-    path: '/cpng',
-    paths: [["/cpng#short-intro", "公司简介"], ['/cpng#org-con', "组织架构"], ['/cpng#culture', "公司文化及价值观"]],
+    path: '/cond',
+    paths: [["/cond#short-intro", "公司简介"], ['/cond#org-con', "组织架构"], ['/cond#culture', "公司文化及价值观"]],
     name: "cond",
     component: CondPage,
 }, {
@@ -31,7 +36,7 @@ export const links =  [{
 }, {
     phrase: "信息公开",
     path: '/info',
-    paths: [['/info#official', '奕品官网'], ['/info#info', '信息公开']],
+    paths: [['/info/yp-official-page', '奕品官网'], ['/info/public-info-page', '信息公开']],
     name: "info",
     component: InfoPage,
 }, {
@@ -61,4 +66,24 @@ export const routes = [
     path: '/interview-train',
     name: 'interview-train',
     component: InterviewTrain
+}, {
+    path: '/info/yp-official-page',
+    name: 'yp-official-page',
+    component: YPOfficialPage
+}, {
+    path: '/info/public-info-page',
+    name: 'public-info-page',
+    component: PublicInfoPage
+}, {
+    path: '/prac-exp',
+    name: 'prac-exp',
+    component: PracExpPage
+}, {
+    path: '/pre-train',
+    name: 'pre-train',
+    component: PreTrainPage
+}, {
+    path: '/std-train',
+    name: 'std-train',
+    component: StdTrainPage
 }]

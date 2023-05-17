@@ -1,7 +1,6 @@
 <script setup lang='ts'>
 const businesses = [{
   tt: "支农体验",
-  src: ""
 }, {
   tt: "支教体验"
 }, {
@@ -16,14 +15,16 @@ const businesses = [{
 <table class='container table-primary table-hover'>
   <tbody class='card-group'>
     <tr v-for='bus of businesses' :key="bus.tt" class='container bg-opacity-10 card'>
-        <td class='card-header'>
-          <img :src='`/praexp/${bus.tt}.jpg`' :alt='bus.tt'>
+        <td class='card-header w-full'>
+          <img :src='`/praexp/${bus.tt}.jpg`' :alt='bus.tt' >
         </td>
         <td class='card-body'>
 
         </td>
         <td class='card-footer text-center'>
-          <button class='btn btn-outline-primary'> {{ bus.tt }} </button>
+          <router-link to="/prac-exp" class='btn btn-outline-primary'>
+            <button> {{ bus.tt }} </button>
+          </router-link>
         </td>
     </tr>
   </tbody>
@@ -32,9 +33,5 @@ const businesses = [{
 </template>
 
 <style scoped lang='scss'>
-.card-header {
-  img {
-    width: 100%;
-  }
-}
+
 </style>

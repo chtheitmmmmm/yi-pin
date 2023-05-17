@@ -4,7 +4,7 @@ import {inject} from "vue";
 import LCCIcons from "@/components/forum.page/forums-view-block/post-list-side/icon/LCCIcons.vue";
 import axios from "axios";
 import type {ForumDetail} from "@/entities/forum";
-import type {InteractType} from "@/components/forum.page/forums-view-block/PostListSide.vue";
+import type {InteractType} from "@/components/forum.page/forums-view-block/post-list-side/PostListSide.vue";
 import {useSessionStore} from "@/stores/session";
 
 const forum = inject<ForumDetail>('forum')!;

@@ -1,13 +1,17 @@
 <script setup lang="ts">
 
-import { ref } from "vue";
+import {provide, ref} from "vue";
 import ForumsViewBlock from "@/components/forum.page/forums-view-block/ForumsViewBlock.vue";
 import ForumEditBlock from "@/components/forum.page/forum-edit-block/ForumEditBlock.vue";
 import PublicSuccessModal from "@/components/forum.page/PublicSuccessModal.vue";
 import BackBrowseButton from "@/components/forum.page/BackBrowseButton.vue";
+import {useRoute} from "vue-router";
 
 const ifEditing = ref(false)
 const modal = ref<typeof PublicSuccessModal | null>(null)
+const route = useRoute()
+const forumType = ref(Number(route.query.forumType ?? 0))
+provide('forumType', forumType)
 
 function onEditing() {
   ifEditing.value = !ifEditing.value

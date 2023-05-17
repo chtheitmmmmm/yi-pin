@@ -1,0 +1,1 @@
+echo "截至目前您一共写了\033[32m `find src/components/ | grep -c '\.vue$'` \033[0m个组件"

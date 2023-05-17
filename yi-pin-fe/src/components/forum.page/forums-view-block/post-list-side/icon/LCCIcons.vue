@@ -1,7 +1,7 @@
 <script setup lang="ts">
 
 import LCCIcon from "@/components/forum.page/forums-view-block/post-list-side/icon/LCCIcon.vue";
-import type {InteractType} from "@/components/forum.page/forums-view-block/PostListSide.vue";
+import type {InteractType} from "@/components/forum.page/forums-view-block/post-list-side/PostListSide.vue";
 
 const emits = defineEmits<{
   (e: 'interact', type: InteractType): void

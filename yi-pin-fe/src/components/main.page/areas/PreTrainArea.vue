@@ -21,7 +21,11 @@ const trains = [{
         <td class='card-body'>
         </td>
         <td class='card-footer text-center'>
-          <button class='btn btn-outline-primary'> {{ t.tt }} </button>
+          <router-link class='btn btn-outline-primary' to="/pre-train">
+            <button>
+              {{ t.tt }}
+            </button>
+          </router-link>
         </td>
     </tr>
   </tbody>

@@ -300,6 +300,57 @@ export class DbService {
   }
 
   /**
+   * 用户删除帖子
+   */
+  async removeForum(uid: string, fid: string) {
+    const forum = await this.forumRepository.findOneBy({
+      author: uid,
+      id: fid,
+    });
+    // 删除所有的点赞
+    await this.likeRepository.remove(
+      await this.likeRepository.findBy({
+        fid: forum.id,
+      }),
+    );
+    // 删除所有收藏
+    await this.collectionRepository.remove(
+      await this.collectionRepository.findBy({
+        fid: forum.id,
+      }),
+    );
+    const commentsToRemove = await this.commentRepository.findBy({
+      fid: forum.id,
+    });
+    // 删除所有的评论的点赞
+    await Promise.all(
+      commentsToRemove.map((c) =>
+        this.commentLikeRepository.findBy({
+          cid: c.id,
+        }),
+      ),
+    ).then((clikes) =>
+      Promise.all(
+        clikes.map((clike) => this.commentLikeRepository.remove(clike)),
+      ),
+    );
+    // 删除所有评论
+    await this.commentRepository.remove(commentsToRemove);
+    // 删除评论
+    await this.forumRepository.remove(forum);
+    return ServiceResult.ok();
+  }
+
+  async ifUserWroteForum(uid: string, fid: string) {
+    return ServiceResult.ok(
+      (await this.forumRepository.countBy({
+        id: fid,
+        author: uid,
+      })) > 0,
+    );
+  }
+
+  /**
    * 收藏已经存在
    */
   async hasCollection(id: string) {

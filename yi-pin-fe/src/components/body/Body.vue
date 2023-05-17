@@ -7,12 +7,13 @@ import Banner from "@/components/body/Banner.vue";
 export interface BodyArea {
   tt: string,
   slot: any   // vue 组件
-  hash: string
+  hash: string,
+  props?: any,
 }
 
 withDefaults(defineProps<{
   areas: BodyArea[],
-  hasBanner: boolean
+  hasBanner?: boolean
 }>(), {
   hasBanner: true
 })
@@ -23,7 +24,7 @@ withDefaults(defineProps<{
 <div>
   <Banner v-if="hasBanner"/>
   <Area v-for='area in areas' :a='area' :key="area.hash">
-    <component :is='area.slot' />
+    <component :is='area.slot' :props="area.props"/>
   </Area>
 </div>
 </template>

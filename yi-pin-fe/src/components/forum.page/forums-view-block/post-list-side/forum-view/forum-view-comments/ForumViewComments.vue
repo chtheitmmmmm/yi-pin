@@ -48,7 +48,7 @@ function onSubmitComment() {
       type: 'error',
       message: err.response.data.message
         ? err.response.data.message[0]
-        : err.response.data.errMsg
+        : err.response.data.errMsg ?? "发布失败"
     })
     // @ts-ignore
   }).finally(() => {

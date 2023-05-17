@@ -3,12 +3,10 @@
 import {useSessionStore} from "@/stores/session";
 import ProfileWLCTabs from "@/components/forum.page/forums-view-block/profile-side/profile-wlc-tabs/ProfileWLCTabs.vue";
 import RefreshButton from "@/components/forum.page/forums-view-block/RefreshButton.vue";
-import {nextTick, provide, ref} from "vue";
+import { inject, nextTick, type Ref } from "vue";
 
 const session = useSessionStore();
-const refresh = ref(true);
-
-provide('refresh', refresh);
+const refresh = inject<Ref<boolean>>('refresh')!
 
 const emits = defineEmits<{
   (e: "editing"): void

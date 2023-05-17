@@ -6,8 +6,8 @@
 <template>
 <div id="banner" class="carousel slide container mt-4">
   <div class="carousel-inner">
-    <div :class="{'carousel-item': true, active: i === 1}" v-for="i of 4" :key="i">
-      <img :src="`/banners/b${i}.jpg`" class="d-block w-100" :alt="`banner ${i}`">
+    <div :class="{'carousel-item': true, active: i === 1}" v-for="i of 3" :key="i">
+      <img :src="`/banners/p${i}.jpg`" class="d-block w-100" :alt="`banner ${i}`">
     </div>
   </div>
   <button class="carousel-control-prev" type="button" data-bs-target="#banner" data-bs-slide="prev">

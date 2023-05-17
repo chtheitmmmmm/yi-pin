@@ -25,8 +25,9 @@ function onBackView() {
   selection.value = null;
 }
 
-const forumType = ref(0)
-provide('forumType', forumType)
+const forumType = inject<Ref<0 | 1>>('forumType')!;
+const refresh = inject<Ref<boolean>>('refresh')!;
+
 const session = useSessionStore();
 
 function onRefreshList() {
@@ -61,6 +62,15 @@ function onInteract(fid: string, type: InteractType, ifDo: boolean) {
       break;
   }
   onRefreshList() // 目前简单实现一下
+}
+
+function onDelete() {
+  onBackView();
+  onRefreshList();
+  refresh.value = false;
+  nextTick(() => {
+      refresh.value = true;
+  })
 }
 
 watch(
@@ -115,7 +125,7 @@ const theWindow = window;
         <div class="h-full w-5/6 m-auto">
           <RefreshButton class="absolute right-5" @refresh="onRefreshView"/>
           <Suspense v-if="selection" class="h-full">
-            <ForumView :fid="selection" class="w-full h-full" @interact="onInteract"></ForumView>
+            <ForumView :fid="selection" class="w-full h-full" @interact="onInteract" @delete="onDelete" />
             <template #fallback>
               <ForumViewLoading />
             </template>

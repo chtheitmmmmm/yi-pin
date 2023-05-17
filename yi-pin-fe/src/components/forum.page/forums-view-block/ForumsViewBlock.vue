@@ -1,11 +1,13 @@
 <script setup lang="ts">
 
 import ProfileSide from "@/components/forum.page/forums-view-block/profile-side/ProfileSide.vue";
-import PostListSide from "@/components/forum.page/forums-view-block/PostListSide.vue";
+import PostListSide from "@/components/forum.page/forums-view-block/post-list-side/PostListSide.vue";
 import {useSessionStore} from "@/stores/session";
 import {provide, ref} from "vue";
 
 const session = useSessionStore()
+const refresh = ref(true);
+provide('refresh', refresh);
 
 const emits = defineEmits<{
   (e: 'editing'): void

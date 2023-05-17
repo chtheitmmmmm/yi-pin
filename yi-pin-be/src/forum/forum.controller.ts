@@ -6,7 +6,7 @@ import {
   Headers,
   Query,
   ParseIntPipe,
-  Param,
+  Param, Delete,
 } from '@nestjs/common';
 import { ForumService } from './forum.service';
 import { CreateForumDto } from './dto/create-forum.dto';
@@ -66,6 +66,7 @@ export class ForumController {
   @Get('user/collection/:uid')
   @WrapResult
   async findAllUserCollectionForum(@Param('uid') uid: string) {
+    console.log('run me');
     return await this.forumService.findAllUserCollectionForum(uid);
   }
 
@@ -73,5 +74,18 @@ export class ForumController {
   @WrapResult
   async findAllUserCommentForum(@Param('uid') uid: string) {
     return await this.forumService.findAllUserCommentForum(uid);
+  }
+
+  @Delete(':id')
+  @WrapResult
+  async removeForum(
+    @Param('id') fid: string,
+    @Headers('Authorization') uid: string | undefined,
+  ) {
+    if (uid !== undefined) {
+      return await this.forumService.removeForum(uid, fid);
+    } else {
+      throw ServiceResult.userUnauthorized();
+    }
   }
 }

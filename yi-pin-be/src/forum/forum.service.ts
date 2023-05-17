@@ -60,4 +60,20 @@ export class ForumService {
       throw ServiceResult.userDontExists();
     }
   }
+
+  async removeForum(uid: string, fid: string) {
+    if ((await this.dbService.hasUser(uid)).data) {
+      if ((await this.dbService.hasForum(fid)).data) {
+        if ((await this.dbService.ifUserWroteForum(uid, fid)).data) {
+          return await this.dbService.removeForum(uid, fid);
+        } else {
+          throw ServiceResult.userUnauthorized();
+        }
+      } else {
+        throw ServiceResult.forumDontExists();
+      }
+    } else {
+      throw ServiceResult.userDontExists();
+    }
+  }
 }

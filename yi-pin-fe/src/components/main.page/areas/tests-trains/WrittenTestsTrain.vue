@@ -4,7 +4,7 @@ import TestTrain from "@/components/main.page/areas/tests-trains/TestTrain.vue";
 
 const title = 'Since 2023'
 const subTitle = '笔试培训简介'
-const imgSrc = '/test-trains/written.png'
+const imgSrc = '/test-trains/written.jpg'
 const paras = [
     '笔试知识点讲解课程采取小班制，一个班级约为七人。课程设置为每周12节课，一天上两节课，每节课约为两个半小时，中间包含两次十分钟的休息时间，并为提供多种授课形式，包括线下授课、视频网课、直播授课，供客户自由选择。',
     '授课方式和内容',

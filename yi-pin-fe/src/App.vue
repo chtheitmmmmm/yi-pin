@@ -32,7 +32,9 @@ function onRl(ir: boolean) {
     <Header :pages='links as any' @rl="onRl" ref="header"/>
   </div>
   <div class="app-page">
-    <router-view></router-view>
+    <Suspense>
+      <router-view></router-view>
+    </Suspense>
     <LoginToast ref='loginToast'/>
     <RlModal ref='loginModal' />
   </div>
