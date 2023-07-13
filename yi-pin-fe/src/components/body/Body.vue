@@ -22,9 +22,15 @@ withDefaults(defineProps<{
 
 <template>
 <div>
-  <Banner v-if="hasBanner"/>
+  <div class="flex justify-content-center">
+    <Banner v-if="hasBanner" class="m-auto"/>
+  </div>
   <Area v-for='area in areas' :a='area' :key="area.hash">
     <component :is='area.slot' :props="area.props"/>
   </Area>
 </div>
 </template>
+
+<style scoped lang="scss">
+
+</style>
